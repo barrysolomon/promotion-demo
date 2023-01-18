@@ -1,5 +1,5 @@
 kind: gvc
-name: github-demo-gvc # GVC_NAME
+name: CPLN_GVC # GVC_NAME
 description: Promote Demo.
 spec:
   staticPlacement:
