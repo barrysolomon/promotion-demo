@@ -6,7 +6,7 @@
  *  Version History
  * 
  *      Version Date        Author          Notes
- *      0.1     01/18/2023  Barry Solomon   Cloned from Eric's repo
+ *      0.2     01/18/2023  Barry Solomon   Return Environment Variables
  * 
  */
 
