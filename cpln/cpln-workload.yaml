@@ -1,5 +1,5 @@
 kind: workload
-name: CPLN_WORKLOAD # WORKLOAD_NAME
+name: github-demo-workload # CPLN_WORKLOAD # WORKLOAD_NAME
 spec:
   containers:
   - args: []
