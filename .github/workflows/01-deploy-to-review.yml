@@ -49,7 +49,7 @@ jobs:
       shell: bash
       run: |
         cpln image docker-login
-        cpln image build --name ${CPLN_IMAGE}:${SHORT_SHA} --dockerfile ./Dockerfile --push
+        cpln image build --name ${CPLN_IMAGE}:${GITHUB_ENV} --dockerfile ./Dockerfile --push
 
     - name: Normalize Branch Name
       run: echo "PREVIEW_NAME=`echo ${GITHUB_HEAD_REF} | tr '/' '-'`" >> $GITHUB_ENV
