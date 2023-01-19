@@ -64,7 +64,7 @@ jobs:
 
     - name: Execute Debug Output (Prior to Run CPLN Apply)
       shell: bash
-      run: ./release/review/debug.sh
+      run: ./release/debug.sh
 
 # - name: Run CPLN Apply
 #   shell: bash
