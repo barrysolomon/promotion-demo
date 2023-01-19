@@ -51,9 +51,9 @@ jobs:
     - name: Substitute Tokens in Control Plane YAML Files
       shell: bash
       env:
-        RELEASE_NAME: nightly-release-${{ DATE }}
+        RELEASE_NAME: nightly-release-${DATE}
         GITHUB_SHA_7: ${GITHUB_SHA::7}
-        TAG_NAME: nightly-tag-${{ DATE }}
+        TAG_NAME: nightly-tag-${DATE}
 
       working-directory: ./cpln
       run: |
