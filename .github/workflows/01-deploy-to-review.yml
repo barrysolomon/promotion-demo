@@ -22,7 +22,7 @@ env:
   CPLN_TOKEN: ${{secrets.CPLN_TOKEN_DEVELOPMENT}}
   CPLN_IMAGE: ${{secrets.CPLN_IMAGE}}
   GITHUB_HEAD_REF: ${{ github.ref_name }}
-  DATE: ${{ github.event.repository.updated_at}}
+  DATE: $(date +'%Y-%m-%d') # ${{ github.event.repository.updated_at}}
   RELEASE_TYPE: "nightly-release"
 
 jobs:
@@ -43,15 +43,11 @@ jobs:
     - name: Normalize Branch Name
       run: echo "PREVIEW_NAME=`echo ${{ env.GITHUB_HEAD_REF }} | tr '/' '-'`" >> $GITHUB_ENV
 
-    - name: Get current date
-      id: date
-      run: |
-        echo "{date}={$(date +'%Y-%m-%d')}" >> $GITHUB_STATE
     - name: Test with environment variables
       run: echo $TAG_NAME - $RELEASE_NAME
       env:
-        TAG_NAME: nightly-tag-${{ env.date }}
-        RELEASE_NAME: nightly-release-${{ env.date }}
+        TAG_NAME: nightly-tag-${{ env.DATE }}
+        RELEASE_NAME: nightly-release-${{ env.DATE }}
 
     - name: Execute Debug Output (Stage 1)
       shell: bash
@@ -61,7 +57,7 @@ jobs:
       shell: bash
       env:
         BUILD_VERSION: ${GITHUB_SHA::7}
-        RELEASE_NAME: ${{ format('{0}-{1}:{2}', env.RELEASE_TYPE, env.date, env.BUILD_VERSION ) }}
+        RELEASE_NAME: ${{ format('{0}-{1}:{2}', env.RELEASE_TYPE, env.DATE, env.BUILD_VERSION ) }}
 
       working-directory: ./cpln
       run: |
