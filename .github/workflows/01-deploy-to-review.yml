@@ -42,20 +42,6 @@ jobs:
       run: ./debug.sh
 
     - name: Normalize Branch Name
-      # - name: Install Control Plane CLI and Authenticate
-      #   shell: bash
-      #   run: |
-      #     sudo npm install -g @controlplane/cli
-      #     cpln --version
-      #     cpln profile update default --token ${CPLN_TOKEN}
-      #     # echo "SHA: ${GITHUB_SHA}. Short SHA: ${GITHUB_SHA::7}"
-
-      # - name: Containerize application and push image
-      #   shell: bash
-      #   run: |
-      #     cpln image docker-login
-      #     cpln image build --name ${CPLN_IMAGE}:${GITHUB_SHA::7} --dockerfile ./Dockerfile --push
-
       run: echo "PREVIEW_NAME=`echo ${GITHUB_HEAD_REF} | tr '/' '-'`" >> $GITHUB_ENV
 
     - name: Substitute Tokens in Control Plane YAML Files
@@ -70,10 +56,24 @@ jobs:
       shell: bash
       run: ./debug.sh
 
-# - name: Run CPLN Apply
-#   shell: bash
-#   working-directory: ./cpln
-#   run: |
-#     cpln apply -f cpln-gvc.yaml
-#     cpln apply -f cpln-workload.yaml --gvc ${CPLN_GVC}
+    - name: Install Control Plane CLI and Authenticate
+      shell: bash
+      run: |
+        sudo npm install -g @controlplane/cli
+        cpln --version
+        cpln profile update default --token ${CPLN_TOKEN}
+        # echo "SHA: ${GITHUB_SHA}. Short SHA: ${GITHUB_SHA::7}"
+
+    - name: Containerize application and push image
+      shell: bash
+      run: |
+        cpln image docker-login
+        cpln image build --name ${CPLN_IMAGE}:${GITHUB_SHA::7} --dockerfile ./Dockerfile --push
+
+    - name: Run CPLN Apply
+      shell: bash
+      working-directory: ./cpln
+      run: |
+        cpln apply -f cpln-gvc.yaml
+        cpln apply -f cpln-workload.yaml --gvc ${CPLN_GVC}
 
