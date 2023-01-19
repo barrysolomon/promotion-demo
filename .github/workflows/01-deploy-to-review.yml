@@ -67,12 +67,12 @@ jobs:
       shell: bash
       env:
         BUILD_VERSION: ${SHORT_SHA}
-        RELEASE_NAME: nightly-release-${{ steps.date.outputs.date }}
+        RELEASE_NAME: nightly-release:${{ steps.date.outputs.date }}
       working-directory: ./cpln
       run: |
         sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
         sed -i "s/WORKLOAD_NAME/${PREVIEW_NAME}-review-${CPLN_WORKLOAD}/" cpln-workload.yaml
-        sed -i "s/IMAGE_NAME_TAG/\/\/image\/${CPLN_IMAGE}-${RELEASE_NAME}:${BUILD_VERSION}/" cpln-workload.yaml
+        sed -i "s/IMAGE_NAME_TAG/\/\/image\/${CPLN_IMAGE}-${RELEASE_NAME}/" cpln-workload.yaml
 
 
 
