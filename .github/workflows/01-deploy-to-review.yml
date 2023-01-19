@@ -30,9 +30,9 @@ jobs:
     - name: Check out the repo
       uses: actions/checkout@v3
 
-    # - name: Execute Release Tasks
-    #   shell: bash
-    #   run: ./release/review/release-tasks.sh
+    - name: Execute Release Tasks
+      shell: bash
+      run: ./release/review/release-tasks.sh
 
     - name: Set Short SHA
       run: echo "SHORT_SHA=`echo ${{ github.event.pull_request.head.sha }} | cut -c1-7`" >> $GITHUB_ENV
