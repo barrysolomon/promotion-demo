@@ -46,7 +46,7 @@ jobs:
       run: ./debug.sh
 
     - name: Get current date
-      run: echo "DATE=`echo ${{ date +'%Y-%m-%d' }}`" >> $GITHUB_ENV
+      run: echo "DATE=`echo ${{ github.event.repository.updated_at}}`" >> $GITHUB_ENV
 
     - name: Substitute Tokens in Control Plane YAML Files
       shell: bash
