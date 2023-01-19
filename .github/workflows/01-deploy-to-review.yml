@@ -43,7 +43,7 @@ jobs:
         echo "::set-env name=GITHUB_HEAD_REF::${{ env.GITHUB_HEAD_REF ? env.GITHUB_HEAD_REF : "DEVTEST" }}"
 
     - name: Normalize Branch Name
-      run: echo "PREVIEW_NAME=`echo ${ GITHUB_HEAD_REF } | tr '/' '-'`" >> $GITHUB_ENV
+      run: echo "PREVIEW_NAME=`echo ${ env.GITHUB_HEAD_REF } | tr '/' '-'`" >> $GITHUB_ENV
 
     - name: Execute Debug Output (Stage 1)
       shell: bash
