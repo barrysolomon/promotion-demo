@@ -22,6 +22,8 @@ env:
   CPLN_TOKEN: ${{secrets.CPLN_TOKEN_DEVELOPMENT}}
   CPLN_IMAGE: ${{secrets.CPLN_IMAGE}}
   GITHUB_HEAD_REF: ${{ github.ref_name }}
+  DATE: ${{ github.event.repository.updated_at}}
+  RELEASE_NAME: ${{ "nigthly-build:" + github.event.repository.updated_at }}
 
 jobs:
   deploy-to-review:
@@ -44,9 +46,6 @@ jobs:
     - name: Execute Debug Output (Stage 1)
       shell: bash
       run: ./debug.sh
-
-    - name: Get current date
-      run: echo "DATE=`echo ${{ github.event.repository.updated_at}}`" >> $GITHUB_ENV
 
     - name: Substitute Tokens in Control Plane YAML Files
       shell: bash
