@@ -22,7 +22,6 @@ env:
   CPLN_TOKEN: ${{secrets.CPLN_TOKEN_DEVELOPMENT}}
   CPLN_IMAGE: ${{secrets.CPLN_IMAGE}}
   GITHUB_HEAD_REF: ${{ github.ref_name }}
-  TAG_NAME: nightly-tag-${{ steps.date.outputs.date }}
 
 jobs:
   deploy-to-review:
@@ -51,6 +50,8 @@ jobs:
       env:
         RELEASE_NAME: nightly-release-${{ steps.date.outputs.date }}
         GITHUB_SHA_7: ${GITHUB_SHA::7}
+        TAG_NAME: nightly-tag-${{ steps.date.outputs.date }}
+
       working-directory: ./cpln
       run: |
         sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
