@@ -24,7 +24,6 @@ env:
   GITHUB_HEAD_REF: ${{ github.ref_name }}
   DATE: ${{ github.event.repository.updated_at}}
   RELEASE_TYPE: "nightly-release"
-  BUILD_VERSION: ${GITHUB_SHA::7}
 
 jobs:
   deploy-to-review:
@@ -51,7 +50,9 @@ jobs:
     - name: Substitute Tokens in Control Plane YAML Files
       shell: bash
       env:
+        BUILD_VERSION: ${GITHUB_SHA::7}
         RELEASE_NAME: ${{ format('{0}-{1}:{2}', env.RELEASE_TYPE, env.DATE, env.BUILD_VERSION ) }}
+
       working-directory: ./cpln
       run: |
         sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
