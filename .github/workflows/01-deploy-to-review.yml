@@ -62,9 +62,9 @@ jobs:
         sed -i "s/WORKLOAD_NAME/${PREVIEW_NAME}-review-${CPLN_WORKLOAD}/" cpln-workload.yaml
         sed -i "s/IMAGE_NAME_TAG/\/\/image\/${CPLN_IMAGE}:${SHORT_SHA}/" cpln-workload.yaml
 
-    - name: Execute Release Tasks (Prior to Run CPLN Apply)
+    - name: Execute Debug Output (Prior to Run CPLN Apply)
       shell: bash
-      run: ./release/review/release-tasks.sh
+      run: ./release/review/debug.sh
 
 # - name: Run CPLN Apply
 #   shell: bash
