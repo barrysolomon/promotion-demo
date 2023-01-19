@@ -32,7 +32,7 @@ jobs:
 
     - name: Execute Release Tasks
       shell: bash
-      run: ./release/review/release-tasks.sh
+      run: sudo ./release/review/release-tasks.sh
 
     - name: Set Short SHA
       run: echo "SHORT_SHA=`echo ${{ github.event.pull_request.head.sha }} | cut -c1-7`" >> $GITHUB_ENV
