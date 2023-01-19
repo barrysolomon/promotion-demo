@@ -37,12 +37,12 @@ jobs:
     - name: Set Short SHA
       run: echo "SHORT_SHA=`echo ${{ github.event.pull_request.head.sha }} | cut -c1-7`" >> $GITHUB_ENV
 
+    - name: Normalize Branch Name
+      run: echo "PREVIEW_NAME=`echo ${GITHUB_HEAD_REF} | tr '/' '-'`" >> $GITHUB_ENV
+
     - name: Execute Debug Output (Stage 1)
       shell: bash
       run: ./debug.sh
-
-    - name: Normalize Branch Name
-      run: echo "PREVIEW_NAME=`echo ${GITHUB_HEAD_REF} | tr '/' '-'`" >> $GITHUB_ENV
 
     - name: Substitute Tokens in Control Plane YAML Files
       shell: bash
