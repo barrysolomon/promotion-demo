@@ -23,8 +23,6 @@ env:
   CPLN_IMAGE: ${{secrets.CPLN_IMAGE}}
   GITHUB_HEAD_REF: ${{ github.ref_name }}
   TAG_NAME: nightly-tag-${{ steps.date.outputs.date }}
-  RELEASE_NAME: nightly-release-${{ steps.date.outputs.date }}
-  GITHUB_SHA_7: ${GITHUB_SHA::7}
 
 jobs:
   deploy-to-review:
@@ -50,6 +48,9 @@ jobs:
 
     - name: Substitute Tokens in Control Plane YAML Files
       shell: bash
+      env:
+        RELEASE_NAME: nightly-release-${{ steps.date.outputs.date }}
+        GITHUB_SHA_7: ${GITHUB_SHA::7}
       working-directory: ./cpln
       run: |
         sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
