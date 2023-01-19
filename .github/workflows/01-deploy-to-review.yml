@@ -45,6 +45,10 @@ jobs:
       shell: bash
       run: ./debug.sh
 
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
     - name: Substitute Tokens in Control Plane YAML Files
       shell: bash
       env:
@@ -74,7 +78,7 @@ jobs:
       shell: bash
       run: |
         cpln image docker-login
-        cpln image build --name ${CPLN_IMAGE}:${GITHUB_SHA::7} --dockerfile ./Dockerfile --push
+        cpln image build --name ${CPLN_IMAGE}:${RELEASE_NAME} --dockerfile ./Dockerfile --push
 
     - name: Run CPLN Apply
       shell: bash
