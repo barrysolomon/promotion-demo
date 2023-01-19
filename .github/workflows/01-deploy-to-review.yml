@@ -50,7 +50,7 @@ jobs:
     - name: Substitute Tokens in Control Plane YAML Files
       shell: bash
       env:
-        RELEASE_NAME: ${{ env.RELEASE_TYPE + env.DATE }}
+        RELEASE_NAME: ${{ format('{0}:{1}', env.RELEASE_TYPE, env.DATE ) }}
       working-directory: ./cpln
       run: |
         sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
