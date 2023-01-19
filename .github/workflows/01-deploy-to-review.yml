@@ -41,34 +41,34 @@ jobs:
       shell: bash
       run: ./debug.sh
 
-# - name: Install Control Plane CLI and Authenticate
-#   shell: bash
-#   run: |
-#     sudo npm install -g @controlplane/cli
-#     cpln --version
-#     cpln profile update default --token ${CPLN_TOKEN}
-#     # echo "SHA: ${GITHUB_SHA}. Short SHA: ${GITHUB_SHA::7}"
+    - name: Normalize Branch Name
+      # - name: Install Control Plane CLI and Authenticate
+      #   shell: bash
+      #   run: |
+      #     sudo npm install -g @controlplane/cli
+      #     cpln --version
+      #     cpln profile update default --token ${CPLN_TOKEN}
+      #     # echo "SHA: ${GITHUB_SHA}. Short SHA: ${GITHUB_SHA::7}"
 
-# - name: Containerize application and push image
-#   shell: bash
-#   run: |
-#     cpln image docker-login
-#     cpln image build --name ${CPLN_IMAGE}:${GITHUB_SHA::7} --dockerfile ./Dockerfile --push
+      # - name: Containerize application and push image
+      #   shell: bash
+      #   run: |
+      #     cpln image docker-login
+      #     cpln image build --name ${CPLN_IMAGE}:${GITHUB_SHA::7} --dockerfile ./Dockerfile --push
 
-# - name: Normalize Branch Name
-#   run: echo "PREVIEW_NAME=`echo ${GITHUB_HEAD_REF} | tr '/' '-'`" >> $GITHUB_ENV
+      run: echo "PREVIEW_NAME=`echo ${GITHUB_HEAD_REF} | tr '/' '-'`" >> $GITHUB_ENV
 
-# - name: Substitute Tokens in Control Plane YAML Files
-#   shell: bash
-#   working-directory: ./cpln
-#   run: |
-#     sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
-#     sed -i "s/WORKLOAD_NAME/${PREVIEW_NAME}-review-${CPLN_WORKLOAD}/" cpln-workload.yaml
-#     sed -i "s/IMAGE_NAME_TAG/\/\/image\/${CPLN_IMAGE}:${SHORT_SHA}/" cpln-workload.yaml
+    - name: Substitute Tokens in Control Plane YAML Files
+      shell: bash
+      working-directory: ./cpln
+      run: |
+        sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
+        sed -i "s/WORKLOAD_NAME/${PREVIEW_NAME}-review-${CPLN_WORKLOAD}/" cpln-workload.yaml
+        sed -i "s/IMAGE_NAME_TAG/\/\/image\/${CPLN_IMAGE}:${SHORT_SHA}/" cpln-workload.yaml
 
-# - name: Execute Debug Output (Prior to Run CPLN Apply)
-#   shell: bash
-#   run: ./debug.sh
+    - name: Execute Debug Output (Prior to Run CPLN Apply)
+      shell: bash
+      run: ./debug.sh
 
 # - name: Run CPLN Apply
 #   shell: bash
