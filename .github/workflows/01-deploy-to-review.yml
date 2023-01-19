@@ -21,7 +21,7 @@ env:
   CPLN_WORKLOAD: ${{secrets.CPLN_WORKLOAD}}
   CPLN_TOKEN: ${{secrets.CPLN_TOKEN_DEVELOPMENT}}
   CPLN_IMAGE: ${{secrets.CPLN_IMAGE}}
-  GITHUB_HEAD_REF: ${{ GITHUB_HEAD_REF ?? "devtest" }}
+  GITHUB_HEAD_REF: ${{ github.ref_name }}
 
 jobs:
   deploy-to-review:
