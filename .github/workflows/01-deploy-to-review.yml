@@ -39,7 +39,7 @@ jobs:
       run: echo "SHORT_SHA=`echo ${{ github.event.pull_request.head.sha }} | cut -c1-7`" >> $GITHUB_ENV
 
     - name: Normalize Branch Name
-      run: echo "PREVIEW_NAME=`echo ${ env.GITHUB_HEAD_REF } | tr '/' '-'`" >> $GITHUB_ENV
+      run: echo "PREVIEW_NAME=`echo ${{ env.GITHUB_HEAD_REF }} | tr '/' '-'`" >> $GITHUB_ENV
 
     - name: Execute Debug Output (Stage 1)
       shell: bash
