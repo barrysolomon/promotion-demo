@@ -46,15 +46,14 @@ jobs:
       run: ./debug.sh
 
     - name: Get current date
-      id: date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      run: echo "DATE=`$(date +'%Y-%m-%d')`" >> $GITHUB_ENV
 
     - name: Substitute Tokens in Control Plane YAML Files
       shell: bash
       env:
-        RELEASE_NAME: nightly-release-${{ steps.date.outputs.date }}
+        RELEASE_NAME: nightly-release-${{ DATE }}
         GITHUB_SHA_7: ${GITHUB_SHA::7}
-        TAG_NAME: nightly-tag-${{ steps.date.outputs.date }}
+        TAG_NAME: nightly-tag-${{ DATE }}
 
       working-directory: ./cpln
       run: |
