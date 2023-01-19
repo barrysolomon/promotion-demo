@@ -43,6 +43,21 @@ jobs:
     - name: Normalize Branch Name
       run: echo "PREVIEW_NAME=`echo ${{ env.GITHUB_HEAD_REF }} | tr '/' '-'`" >> $GITHUB_ENV
 
+    - name: Get current date
+
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+    - name: Test with environment variables
+      run: echo $(TAG_NAME) - $(RELEASE_NAME)
+      env:
+        TAG_NAME: nightly-tag-${{ steps.date.outputs.date }}
+        RELEASE_NAME: nightly-release-${{ steps.date.outputs.date }}
+    - name: Test with input
+      uses: actions/hello-world-docker-action@master
+      with:
+        who-to-greet: Mona-the-Octocat-${{ steps.date.outputs.date }}
+
     - name: Execute Debug Output (Stage 1)
       shell: bash
       run: ./debug.sh
@@ -52,12 +67,13 @@ jobs:
       env:
         BUILD_VERSION: ${GITHUB_SHA::7}
         RELEASE_NAME: nightly-release-${{ steps.date.outputs.date }}
-
       working-directory: ./cpln
       run: |
         sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
         sed -i "s/WORKLOAD_NAME/${PREVIEW_NAME}-review-${CPLN_WORKLOAD}/" cpln-workload.yaml
         sed -i "s/IMAGE_NAME_TAG/\/\/image\/${CPLN_IMAGE}-${RELEASE_NAME}:${BUILD_VERSION}/" cpln-workload.yaml
+
+
 
     - name: Execute Debug Output (Prior to Run CPLN Apply)
       shell: bash
