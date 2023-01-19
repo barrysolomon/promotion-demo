@@ -22,7 +22,7 @@ env:
   CPLN_TOKEN: ${{secrets.CPLN_TOKEN_DEVELOPMENT}}
   CPLN_IMAGE: ${{secrets.CPLN_IMAGE}}
   GITHUB_HEAD_REF: ${{ github.ref_name }}
-  DATE: $(date +'%Y-%m-%d') # ${{ github.event.repository.updated_at}}
+  DATE: ${{ date +'%Y-%m-%d' }} # ${{ github.event.repository.updated_at}}
   RELEASE_TYPE: "nightly-release"
 
 jobs:
