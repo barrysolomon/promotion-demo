@@ -26,7 +26,7 @@ spec:
       maxScale: 1
       metric: concurrency
       minScale: 1
-      scaleToZeroDelay: 300
+      scaleToZeroDelay: 15
       target: 100
     capacityAI: false
     debug: false
