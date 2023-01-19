@@ -21,7 +21,7 @@ env:
   CPLN_WORKLOAD: ${{secrets.CPLN_WORKLOAD}}
   CPLN_TOKEN: ${{secrets.CPLN_TOKEN_DEVELOPMENT}}
   CPLN_IMAGE: ${{secrets.CPLN_IMAGE}}
-  GITHUB_HEAD_REF: ${{ env.GITHUB_HEAD_REF ?? github.head_ref }}
+  GITHUB_HEAD_REF: ${{ env.GITHUB_HEAD_REF ?? "DEVTEST" }}
 
 jobs:
   deploy-to-review:
@@ -38,12 +38,8 @@ jobs:
     - name: Set Short SHA
       run: echo "SHORT_SHA=`echo ${{ github.event.pull_request.head.sha }} | cut -c1-7`" >> $GITHUB_ENV
 
-    - name: Set GITHUB_HEAD_REF
-      run: |
-        echo "::set-env name=GITHUB_HEAD_REF::${{ env.GITHUB_HEAD_REF ? env.GITHUB_HEAD_REF : "DEVTEST" }}"
-
     - name: Normalize Branch Name
-      run: echo "PREVIEW_NAME=`echo ${{ env.GITHUB_HEAD_REF }} | tr '/' '-'`" >> $GITHUB_ENV
+      run: echo "PREVIEW_NAME=`echo ${ env.GITHUB_HEAD_REF } | tr '/' '-'`" >> $GITHUB_ENV
 
     - name: Execute Debug Output (Stage 1)
       shell: bash
