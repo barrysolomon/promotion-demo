@@ -22,6 +22,9 @@ env:
   CPLN_TOKEN: ${{secrets.CPLN_TOKEN_DEVELOPMENT}}
   CPLN_IMAGE: ${{secrets.CPLN_IMAGE}}
   GITHUB_HEAD_REF: ${{ github.ref_name }}
+  TAG_NAME: nightly-tag-${{ steps.date.outputs.date }}
+  RELEASE_NAME: nightly-release-${{ steps.date.outputs.date }}
+  GITHUB_SHA_7: ${GITHUB_SHA::7}
 
 jobs:
   deploy-to-review:
@@ -51,7 +54,7 @@ jobs:
       run: |
         sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
         sed -i "s/WORKLOAD_NAME/${PREVIEW_NAME}-review-${CPLN_WORKLOAD}/" cpln-workload.yaml
-        sed -i "s/IMAGE_NAME_TAG/\/\/image\/${CPLN_IMAGE}:${steps.date.outputs.date}.${GITHUB_SHA::7}/" cpln-workload.yaml
+        sed -i "s/IMAGE_NAME_TAG/\/\/image\/${CPLN_IMAGE}:${RELEASE_NAME}/" cpln-workload.yaml
 
     - name: Execute Debug Output (Prior to Run CPLN Apply)
       shell: bash
