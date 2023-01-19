@@ -23,7 +23,8 @@ env:
   CPLN_IMAGE: ${{secrets.CPLN_IMAGE}}
   GITHUB_HEAD_REF: ${{ github.ref_name }}
   DATE: ${{ github.event.repository.updated_at}}
-  RELEASE_NAME: ${{ "nigthly-build:" + github.event.repository.updated_at }}
+  RELEASE_TYPE: "nightly-build"
+  RELEASE_NAME: ${{ env.RELEASE_TYPE + env.DATE }}
 
 jobs:
   deploy-to-review:
