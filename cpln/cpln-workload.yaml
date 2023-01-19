@@ -2,24 +2,24 @@ kind: workload
 name: WORKLOAD_NAME
 spec:
   containers:
-    - args: []
-      cpu: 50m
-      env: []
-      name: "promote-demo"
-      image: "IMAGE_NAME_TAG"
-      memory: 128Mi 
-      port: 8080
-      readinessProbe:
-        failureThreshold: 3
-        httpGet:
-          httpHeaders: []
-          path: /
-          port: 8080
-          scheme: HTTP
-        initialDelaySeconds: 0
-        periodSeconds: 10
-        successThreshold: 1
-        timeoutSeconds: 1
+  - args: []
+    cpu: 50m
+    env: []
+    name: "promote-demo"
+    image: "IMAGE_NAME_TAG"
+    memory: 128Mi
+    port: 8080
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        httpHeaders: []
+        path: /
+        port: 8080
+        scheme: HTTP
+      initialDelaySeconds: 0
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
   defaultOptions:
     autoscaling:
       maxConcurrency: 1000
@@ -34,7 +34,7 @@ spec:
   firewallConfig:
     external:
       inboundAllowCIDR:
-        - 0.0.0.0/0
+      - 0.0.0.0/0
       outboundAllowCIDR: []
       outboundAllowHostname: []
     internal:

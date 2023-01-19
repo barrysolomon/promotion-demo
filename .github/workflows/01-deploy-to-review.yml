@@ -2,15 +2,17 @@
 
 name: 01-Deploy-To-Review
 
+# on: [push]
+
 on:
   pull_request:
     types:
-      - opened
-      - synchronize
+    - opened
+    - synchronize
     branches:
-      - main
+    - main
     paths-ignore:
-      - ".github/workflows/**"
+    - ".github/workflows/**"
 
 # Convert the GitHub secret variables to environment variables for use by the Control Plane CLI
 env:
@@ -25,44 +27,53 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
+    - name: Check out the repo
+      uses: actions/checkout@v3
 
-      - name: Execute Release Tasks
-        shell: bash
-        run: ./release/review/release-tasks.sh
+    - name: Execute Release Tasks
+      shell: bash
+      run: ./release/review/release-tasks.sh
 
-      - name: Set Short SHA
-        run: echo "SHORT_SHA=`echo ${{ github.event.pull_request.head.sha }} | cut -c1-7`" >> $GITHUB_ENV
+    - name: Set Short SHA
+      run: echo "SHORT_SHA=`echo ${{ github.event.pull_request.head.sha }} | cut -c1-7`" >> $GITHUB_ENV
 
-      - name: Install Control Plane CLI and Authenticate
-        shell: bash
-        run: |
-          sudo npm install -g @controlplane/cli
-          cpln --version
-          cpln profile update default --token ${CPLN_TOKEN}
-          # echo "SHA: ${GITHUB_SHA}. Short SHA: ${GITHUB_SHA::7}"
+    - name: Normalize Branch Name
+      run: echo "PREVIEW_NAME=`echo ${GITHUB_HEAD_REF} | tr '/' '-'`" >> $GITHUB_ENV
 
-      - name: Containerize application and push image
-        shell: bash
-        run: |
-          cpln image docker-login
-          cpln image build --name ${CPLN_IMAGE}:${SHORT_SHA} --dockerfile ./Dockerfile --push
+    - name: Execute Debug Output (Stage 1)
+      shell: bash
+      run: ./debug.sh
 
-      - name: Normalize Branch Name
-        run: echo "PREVIEW_NAME=`echo ${GITHUB_HEAD_REF} | tr '/' '-'`" >> $GITHUB_ENV
+    - name: Substitute Tokens in Control Plane YAML Files
+      shell: bash
+      working-directory: ./cpln
+      run: |
+        sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
+        sed -i "s/WORKLOAD_NAME/${PREVIEW_NAME}-review-${CPLN_WORKLOAD}/" cpln-workload.yaml
+        sed -i "s/IMAGE_NAME_TAG/\/\/image\/${CPLN_IMAGE}:${SHORT_SHA}/" cpln-workload.yaml
 
-      - name: Substitute Tokens in Control Plane YAML Files
-        shell: bash
-        working-directory: ./cpln
-        run: |
-          sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
-          sed -i "s/WORKLOAD_NAME/${PREVIEW_NAME}-review-${CPLN_WORKLOAD}/" cpln-workload.yaml
-          sed -i "s/IMAGE_NAME_TAG/\/\/image\/${CPLN_IMAGE}:${SHORT_SHA}/" cpln-workload.yaml
+    - name: Execute Debug Output (Prior to Run CPLN Apply)
+      shell: bash
+      run: ./debug.sh
 
-      - name: Run CPLN Apply
-        shell: bash
-        working-directory: ./cpln
-        run: |
-          cpln apply -f cpln-gvc.yaml
-          cpln apply -f cpln-workload.yaml --gvc ${CPLN_GVC}
+    - name: Install Control Plane CLI and Authenticate
+      shell: bash
+      run: |
+        sudo npm install -g @controlplane/cli
+        cpln --version
+        cpln profile update default --token ${CPLN_TOKEN}
+        # echo "SHA: ${GITHUB_SHA}. Short SHA: ${GITHUB_SHA::7}"
+
+    - name: Containerize application and push image
+      shell: bash
+      run: |
+        cpln image docker-login
+        cpln image build --name ${CPLN_IMAGE}:${GITHUB_SHA::7} --dockerfile ./Dockerfile --push
+
+    - name: Run CPLN Apply
+      shell: bash
+      working-directory: ./cpln
+      run: |
+        cpln apply -f cpln-gvc.yaml
+        cpln apply -f cpln-workload.yaml --gvc ${CPLN_GVC}
+
