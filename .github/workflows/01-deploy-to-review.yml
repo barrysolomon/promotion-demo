@@ -42,7 +42,7 @@ jobs:
         echo "SHORT_SHA=`echo ${GITHUB_SHA::7} | cut -c1-7`" >> $GITHUB_ENV
         echo "BRANCH_NAME=`echo ${{ env.GITHUB_HEAD_REF }} | tr '/' '-'`" >> $GITHUB_ENV
         echo "BUILD_VERSION=`echo ${GITHUB_SHA::7} | cut -c1-7`" >> $GITHUB_ENV
-        echo "RELEASE_NAME=${RELEASE_TYPE}:${DATE}" >> $GITHUB_ENV
+        echo "RELEASE_NAME=${RELEASE_TYPE}:$(date +'%Y-%m-%d-%H-%m')" >> $GITHUB_ENV
 
     - name: Set Image/Workload Name Variables
       run: |
