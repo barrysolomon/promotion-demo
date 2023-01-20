@@ -37,27 +37,31 @@ jobs:
       shell: bash
       run: ./release/review/release-tasks.sh
 
-    - name: Get DATE/SHORT_SHA
+    - name: Set Working Env Variables
       run: |
-        echo "DATE=$(date +'%Y-%m-%d-%H-%mm')" >> $GITHUB_ENV
+        echo "DATE=$(date +'%Y-%m-%d-%H-%m')" >> $GITHUB_ENV
         echo "SHORT_SHA=`echo ${GITHUB_SHA::7} | cut -c1-7`" >> $GITHUB_ENV
         echo "BRANCH_NAME=`echo ${{ env.GITHUB_HEAD_REF }} | tr '/' '-'`" >> $GITHUB_ENV
-
-    - name: Normalize Branch Name
-      run: |
         echo "BUILD_VERSION=`echo ${GITHUB_SHA::7} | cut -c1-7`" >> $GITHUB_ENV
         echo "RELEASE_NAME=${RELEASE_TYPE}:${DATE}" >> $GITHUB_ENV
-        
+
+    - name: Set Image/Workload Name Variables
+      run: |
+        echo "WORKLOAD_NAME={CPLN_WORKLOAD}-${BRANCH_NAME}-${RELEASE_TYPE}" >> $GITHUB_ENV
+        echo "IMAGE_NAME={CPLN_IMAGE}-${RELEASE_NAME}" >> $GITHUB_ENV
+
     - name: Echo Env Variables (Debug)
       run: |
         echo "BRANCH_NAME: ${BRANCH_NAME}. GITHUB_HEAD_REF: ${GITHUB_HEAD_REF}"
         echo "SHA: ${GITHUB_SHA}. GITHUB_SHA::7: ${GITHUB_SHA::7}. SHORT_SHA: ${SHORT_SHA}"
         echo "CPLN_IMAGE: ${CPLN_IMAGE}. RELEASE_NAME: ${RELEASE_NAME}. BUILD_VERSION: ${BUILD_VERSION}"
         echo "DATE: ${DATE}"
+        echo "WORKLOAD_NAME: ${WORKLOAD_NAME}"
+        echo "IMAGE_NAME: ${IMAGE_NAME}"
 
-    - name: Execute Debug Output (Stage 1)
-      shell: bash
-      run: ./debug.sh
+    # - name: Execute Debug Output (Stage 1)
+    #   shell: bash
+    #   run: ./debug.sh
 
     - name: Substitute Tokens in Control Plane YAML Files
       shell: bash
