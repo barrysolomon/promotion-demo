@@ -34,20 +34,14 @@ jobs:
       shell: bash
       run: ./release/review/release-tasks.sh
 
-    - name: Set Short SHA
-      run: echo "SHORT_SHA=`echo ${{ github.event.pull_request.head.sha }} | cut -c1-7`" >> $GITHUB_ENV
-
     - name: Normalize Branch Name
       run: echo "PREVIEW_NAME=`echo ${GITHUB_HEAD_REF} | tr '/' '-'`" >> $GITHUB_ENV
-
-    - name: Execute Debug Output (Stage 1)
-      shell: bash
-      run: ./debug.sh
 
     - name: Substitute Tokens in Control Plane YAML Files
       shell: bash
       working-directory: ./cpln
       run: |
+        echo "SHORT_SHA=`echo ${{ github.event.pull_request.head.sha }} | cut -c1-7`" >> $GITHUB_ENV
         sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
         sed -i "s/WORKLOAD_NAME/${PREVIEW_NAME}-review-${CPLN_WORKLOAD}/" cpln-workload.yaml
         sed -i "s/IMAGE_NAME_TAG/\/\/image\/${CPLN_IMAGE}:${SHORT_SHA}/" cpln-workload.yaml
