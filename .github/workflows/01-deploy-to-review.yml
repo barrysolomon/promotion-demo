@@ -39,7 +39,7 @@ jobs:
 
     - name: Set Short SHA
       run: |
-        echo "SHORT_SHA=`echo ${{ github.event.pull_request.head.sha }} | cut -c1-7`" >> $GITHUB_ENV
+        echo "SHORT_SHA=`echo ${GITHUB_SHA::7} | cut -c1-7`" >> $GITHUB_ENV
         echo "SHA: ${GITHUB_SHA}. GITHUB_SHA::7: ${GITHUB_SHA::7}. SHORT_SHA: ${SHORT_SHA}"
 
     - name: Normalize Branch Name
