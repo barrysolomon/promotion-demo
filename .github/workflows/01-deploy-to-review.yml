@@ -26,7 +26,7 @@ env:
 jobs:
 
   deploy-to-review:
-  
+
     runs-on: ubuntu-latest
     steps:
 
@@ -72,7 +72,6 @@ jobs:
         sed -i "s/WORKLOAD_NAME/${PREVIEW_NAME}-review-${CPLN_WORKLOAD}/" cpln-workload.yaml
         sed -i "s/IMAGE_NAME_TAG/\/\/image\/${CPLN_IMAGE}-${RELEASE_NAME}/" cpln-workload.yaml
 
-
     - name: Execute Debug Output (Prior to Run CPLN Apply)
       shell: bash
       run: ./debug.sh
@@ -89,7 +88,7 @@ jobs:
       shell: bash
       run: |
         cpln image docker-login
-        cpln image build --name ${CPLN_IMAGE}:${RELEASE_NAME} --dockerfile ./Dockerfile --push
+        cpln image build --name ${CPLN_IMAGE}-${RELEASE_NAME} --dockerfile ./Dockerfile --push
 
     - name: Run CPLN Apply
       shell: bash
