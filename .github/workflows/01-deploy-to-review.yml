@@ -20,7 +20,7 @@ env:
   CPLN_TOKEN: ${{secrets.CPLN_TOKEN_DEVELOPMENT}}
   CPLN_IMAGE: ${{secrets.CPLN_IMAGE}}
   GITHUB_HEAD_REF: ${{ github.ref_name }}
-  DATE: ${{ github.event.repository.updated_at}}
+  DATE: ${{ github.event.repository.updated_at }}
   RELEASE_TYPE: "nightly-release"
 
 jobs:
@@ -40,22 +40,26 @@ jobs:
     - name: Set Short SHA
       run: |
         echo "SHORT_SHA=`echo ${GITHUB_SHA::7} | cut -c1-7`" >> $GITHUB_ENV
-        echo "SHA: ${GITHUB_SHA}. GITHUB_SHA::7: ${GITHUB_SHA::7}. SHORT_SHA: ${SHORT_SHA}"
 
     - name: Normalize Branch Name
       run: |
         echo "PREVIEW_NAME=`echo ${{ env.GITHUB_HEAD_REF }} | tr '/' '-'`" >> $GITHUB_ENV
-        echo "PREVIEW_NAME: ${PREVIEW_NAME}. GITHUB_HEAD_REF: ${GITHUB_HEAD_REF}"
-        echo "SHA: ${GITHUB_SHA}. GITHUB_SHA::7: ${GITHUB_SHA::7}. SHORT_SHA: ${SHORT_SHA}"
 
     - name: Get current date
       id: date
       run: |
-        echo "::set-output name=date::$(date +'%Y-%m-%d')"
+        echo "{date::$(date +'%Y-%m-%d')}={value}" >> $GITHUB_OUTPUT
 
     - name: Execute Debug Output (Stage 1)
       shell: bash
       run: ./debug.sh
+
+    - name: Echo Env Variables
+      run: |
+        echo "PREVIEW_NAME: ${PREVIEW_NAME}. GITHUB_HEAD_REF: ${GITHUB_HEAD_REF}"
+        echo "SHA: ${GITHUB_SHA}. GITHUB_SHA::7: ${GITHUB_SHA::7}. SHORT_SHA: ${SHORT_SHA}"
+        echo "CPLN_IMAGE: ${CPLN_IMAGE}. RELEASE_NAME: ${RELEASE_NAME}. BUILD_VERSION: ${BUILD_VERSION}"
+        echo "date: ${date}"
 
     - name: Substitute Tokens in Control Plane YAML Files
       shell: bash
@@ -67,7 +71,6 @@ jobs:
         sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
         sed -i "s/WORKLOAD_NAME/${PREVIEW_NAME}-review-${CPLN_WORKLOAD}/" cpln-workload.yaml
         sed -i "s/IMAGE_NAME_TAG/\/\/image\/${CPLN_IMAGE}-${RELEASE_NAME}/" cpln-workload.yaml
-        echo "CPLN_IMAGE: ${CPLN_IMAGE}. RELEASE_NAME: ${RELEASE_NAME}. BUILD_VERSION: ${BUILD_VERSION}"
 
     - name: Execute Debug Output (Prior to Run CPLN Apply)
       shell: bash
