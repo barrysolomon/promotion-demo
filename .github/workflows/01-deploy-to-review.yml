@@ -48,7 +48,7 @@ jobs:
     - name: Set Image/Workload Name Variables
       run: |
         echo "WORKLOAD_NAME=${CPLN_WORKLOAD}--${BRANCH_NAME}-${RELEASE_TYPE}" >> $GITHUB_ENV
-        echo "IMAGE_NAME=${CPLN_IMAGE}--{BRANCH_NAME}-${RELEASE_NAME}" >> $GITHUB_ENV
+        echo "IMAGE_NAME=${CPLN_IMAGE}--{BRANCH_NAME}-${RELEASE_NAME}:${DATE}" >> $GITHUB_ENV
         echo "GVC_NAME=${CPLN_GVC}" >> $GITHUB_ENV
 
     - name: Echo Env Variables (Debug)
