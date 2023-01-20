@@ -15,7 +15,7 @@ const os = require('os');
 
 const HOSTNAME = os.hostname();
 const PORT = process.env.PORT || 8080
-const SERVER_VERSION = "0.2.4";
+const SERVER_VERSION = "0.2.5";
 
 express()
     .get('/', (req, res) => {
