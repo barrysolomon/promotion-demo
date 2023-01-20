@@ -6,7 +6,7 @@
  *  Version History
  * 
  *      Version Date        Author          Notes
- *      0.2     01/18/2023  Barry Solomon   Return Environment Variables
+ *      0.4     01/18/2023  Barry Solomon   Return Environment Variables
  * 
  */
 
