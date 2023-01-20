@@ -1,18 +1,16 @@
 # Control Plane GitHub Action
-
 name: 01-Deploy-To-Review
 
-# on: [push]
-
-on:
-  pull_request:
-    types:
-    - opened
-    - synchronize
-    branches:
-    - main
-    paths-ignore:
-    - ".github/workflows/**"
+on: [push]
+# on:
+#   pull_request:
+#     types:
+#     - opened
+#     - synchronize
+#     branches:
+#     - main
+#     paths-ignore:
+#     - ".github/workflows/**"
 
 # Convert the GitHub secret variables to environment variables for use by the Control Plane CLI
 env:
@@ -21,12 +19,16 @@ env:
   CPLN_WORKLOAD: ${{secrets.CPLN_WORKLOAD}}
   CPLN_TOKEN: ${{secrets.CPLN_TOKEN_DEVELOPMENT}}
   CPLN_IMAGE: ${{secrets.CPLN_IMAGE}}
+  GITHUB_HEAD_REF: ${{ github.ref_name }}
+  RELEASE_TYPE: "review"
 
 jobs:
-  deploy-to-review:
-    runs-on: ubuntu-latest
 
+  deploy-to-review:
+
+    runs-on: ubuntu-latest
     steps:
+
     - name: Check out the repo
       uses: actions/checkout@v3
 
@@ -34,17 +36,40 @@ jobs:
       shell: bash
       run: ./release/review/release-tasks.sh
 
-    - name: Normalize Branch Name
-      run: echo "PREVIEW_NAME=`echo ${GITHUB_HEAD_REF} | tr '/' '-'`" >> $GITHUB_ENV
+    - name: Set Working Env Variables
+      run: |
+        echo "DATE=$(date +'%Y-%m-%d-%H-%M')" >> $GITHUB_ENV
+        echo "SHORT_SHA=`echo ${GITHUB_SHA::7} | cut -c1-7`" >> $GITHUB_ENV
+        echo "BRANCH_NAME=`echo ${{ env.GITHUB_HEAD_REF }} | tr '/' '-'`" >> $GITHUB_ENV
+        echo "BUILD_VERSION=`echo ${GITHUB_SHA::7} | cut -c1-7`" >> $GITHUB_ENV
+        echo "RELEASE_NAME=${RELEASE_TYPE}:$(date +'%Y-%m-%d-%H-%M')" >> $GITHUB_ENV
+
+    - name: Set Image/Workload Name Variables
+      run: |
+        echo "WORKLOAD_NAME=${CPLN_WORKLOAD}--${BRANCH_NAME}-${RELEASE_TYPE}" >> $GITHUB_ENV
+        echo "IMAGE_NAME=${CPLN_IMAGE}--${RELEASE_NAME}" >> $GITHUB_ENV
+        echo "GVC_NAME=${CPLN_GVC}" >> $GITHUB_ENV
+
+    - name: Echo Env Variables (Debug)
+      run: |
+        echo "BRANCH_NAME: ${BRANCH_NAME}. GITHUB_HEAD_REF: ${GITHUB_HEAD_REF}"
+        echo "SHA: ${GITHUB_SHA}. GITHUB_SHA::7: ${GITHUB_SHA::7}. SHORT_SHA: ${SHORT_SHA}"
+        echo "RELEASE_NAME: ${RELEASE_NAME}. BUILD_VERSION: ${BUILD_VERSION}"
+        echo "DATE: ${DATE}"
+        echo "WORKLOAD_NAME: ${WORKLOAD_NAME}"
+        echo "IMAGE_NAME: ${IMAGE_NAME}"
+
+    # - name: Execute Debug Output (Stage 1)
+    #   shell: bash
+    #   run: ./debug.sh
 
     - name: Substitute Tokens in Control Plane YAML Files
       shell: bash
       working-directory: ./cpln
       run: |
-        echo "SHORT_SHA=`echo ${{ github.event.pull_request.head.sha }} | cut -c1-7`" >> $GITHUB_ENV
-        sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
-        sed -i "s/WORKLOAD_NAME/${PREVIEW_NAME}-review-${CPLN_WORKLOAD}/" cpln-workload.yaml
-        sed -i "s/IMAGE_NAME_TAG/\/\/image\/${CPLN_IMAGE}:${SHORT_SHA}/" cpln-workload.yaml
+        sed -i "s/GVC_NAME/${GVC_NAME}/" cpln-gvc.yaml
+        sed -i "s/WORKLOAD_NAME/${WORKLOAD_NAME}/" cpln-workload.yaml
+        sed -i "s/IMAGE_NAME_TAG/\/\/image\/${IMAGE_NAME}/" cpln-workload.yaml
 
     - name: Execute Debug Output (Prior to Run CPLN Apply)
       shell: bash
@@ -56,13 +81,12 @@ jobs:
         sudo npm install -g @controlplane/cli
         cpln --version
         cpln profile update default --token ${CPLN_TOKEN}
-        # echo "SHA: ${GITHUB_SHA}. Short SHA: ${GITHUB_SHA::7}"
 
     - name: Containerize application and push image
       shell: bash
       run: |
         cpln image docker-login
-        cpln image build --name ${CPLN_IMAGE}:${GITHUB_SHA::7} --dockerfile ./Dockerfile --push
+        cpln image build --name ${IMAGE_NAME} --dockerfile ./Dockerfile --push
 
     - name: Run CPLN Apply
       shell: bash
@@ -70,4 +94,3 @@ jobs:
       run: |
         cpln apply -f cpln-gvc.yaml
         cpln apply -f cpln-workload.yaml --gvc ${CPLN_GVC}
-
