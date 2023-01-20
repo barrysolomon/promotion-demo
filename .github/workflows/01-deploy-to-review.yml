@@ -21,7 +21,7 @@ env:
   CPLN_IMAGE: ${{secrets.CPLN_IMAGE}}
   GITHUB_HEAD_REF: ${{ github.ref_name }}
   DATE: ${{ github.event.repository.updated_at }}
-  RELEASE_TYPE: "nightly-release"
+  RELEASE_TYPE: "review"
 
 jobs:
 
@@ -37,20 +37,20 @@ jobs:
       shell: bash
       run: ./release/review/release-tasks.sh
 
-    - name: Set Env Variables
+    - name: Get DATE/SHORT_SHA
       run: |
-        echo "SHORT_SHA=`echo ${GITHUB_SHA::7} | cut -c1-7`" >> $GITHUB_ENV
-        echo "BUILD_VERSION=`echo ${GITHUB_SHA::7} | cut -c1-7`" >> $GITHUB_ENV
-        echo "RELEASE_NAME=nightly-release:${{ steps.date.outputs.date }}" >> $GITHUB_ENV
         echo "DATE=$(date +'%Y-%m-%d-%H-%mm')" >> $GITHUB_ENV
+        echo "SHORT_SHA=`echo ${GITHUB_SHA::7} | cut -c1-7`" >> $GITHUB_ENV
+        echo "BRANCH_NAME=`echo ${{ env.GITHUB_HEAD_REF }} | tr '/' '-'`" >> $GITHUB_ENV
 
     - name: Normalize Branch Name
       run: |
-        echo "PREVIEW_NAME=`echo ${{ env.GITHUB_HEAD_REF }} | tr '/' '-'`" >> $GITHUB_ENV
+        echo "BUILD_VERSION=`echo ${GITHUB_SHA::7} | cut -c1-7`" >> $GITHUB_ENV
+        echo "RELEASE_NAME=${RELEASE_TYPE}:${DATE}" >> $GITHUB_ENV
         
     - name: Echo Env Variables (Debug)
       run: |
-        echo "PREVIEW_NAME: ${PREVIEW_NAME}. GITHUB_HEAD_REF: ${GITHUB_HEAD_REF}"
+        echo "BRANCH_NAME: ${BRANCH_NAME}. GITHUB_HEAD_REF: ${GITHUB_HEAD_REF}"
         echo "SHA: ${GITHUB_SHA}. GITHUB_SHA::7: ${GITHUB_SHA::7}. SHORT_SHA: ${SHORT_SHA}"
         echo "CPLN_IMAGE: ${CPLN_IMAGE}. RELEASE_NAME: ${RELEASE_NAME}. BUILD_VERSION: ${BUILD_VERSION}"
         echo "DATE: ${DATE}"
@@ -64,7 +64,7 @@ jobs:
       working-directory: ./cpln
       run: |
         sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
-        sed -i "s/WORKLOAD_NAME/${PREVIEW_NAME}-review-${CPLN_WORKLOAD}/" cpln-workload.yaml
+        sed -i "s/WORKLOAD_NAME/${CPLN_WORKLOAD}-${BRANCH_NAME}-review/" cpln-workload.yaml
         sed -i "s/IMAGE_NAME_TAG/\/\/image\/${CPLN_IMAGE}-${RELEASE_NAME}/" cpln-workload.yaml
 
     - name: Execute Debug Output (Prior to Run CPLN Apply)
@@ -77,7 +77,6 @@ jobs:
         sudo npm install -g @controlplane/cli
         cpln --version
         cpln profile update default --token ${CPLN_TOKEN}
-        # echo "SHA: ${GITHUB_SHA}. Short SHA: ${GITHUB_SHA::7}"
 
     - name: Containerize application and push image
       shell: bash
