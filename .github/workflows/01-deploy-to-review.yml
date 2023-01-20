@@ -46,6 +46,7 @@ jobs:
       run: |
         echo "PREVIEW_NAME=`echo ${{ env.GITHUB_HEAD_REF }} | tr '/' '-'`" >> $GITHUB_ENV
         echo "PREVIEW_NAME: ${PREVIEW_NAME}. GITHUB_HEAD_REF: ${GITHUB_HEAD_REF}"
+        echo "SHA: ${GITHUB_SHA}. GITHUB_SHA::7: ${GITHUB_SHA::7}. SHORT_SHA: ${SHORT_SHA}"
 
     - name: Get current date
       id: date
