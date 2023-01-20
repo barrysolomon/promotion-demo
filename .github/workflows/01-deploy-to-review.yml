@@ -38,25 +38,20 @@ jobs:
       run: ./release/review/release-tasks.sh
 
     - name: Set Short SHA
-      run: echo "SHORT_SHA=`echo ${{ github.event.pull_request.head.sha }} | cut -c1-7`" >> $GITHUB_ENV
+      run: |
+        echo "SHORT_SHA=`echo ${{ github.event.pull_request.head.sha }} | cut -c1-7`" >> $GITHUB_ENV
+        echo "SHA: ${GITHUB_SHA}. GITHUB_SHA::7: ${GITHUB_SHA::7}. SHORT_SHA: ${SHORT_SHA}"
 
     - name: Normalize Branch Name
-      run: echo "PREVIEW_NAME=`echo ${{ env.GITHUB_HEAD_REF }} | tr '/' '-'`" >> $GITHUB_ENV
+      run: |
+        echo "PREVIEW_NAME=`echo ${{ env.GITHUB_HEAD_REF }} | tr '/' '-'`" >> $GITHUB_ENV
+        echo "PREVIEW_NAME: ${PREVIEW_NAME}. GITHUB_HEAD_REF: ${GITHUB_HEAD_REF}"
 
     - name: Get current date
       id: date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      run: |
+        echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
-    # - name: Test with environment variables
-    #   run: echo ${{TAG_NAME}} - ${{RELEASE_NAME}}
-    #   env:
-    #     TAG_NAME: nightly-tag-${{ steps.date.outputs.date }}
-    #     RELEASE_NAME: nightly-release-${{ steps.date.outputs.date }}
-
-    - name: Test with input
-      uses: actions/hello-world-docker-action@master
-      with:
-        who-to-greet: Mona-the-Octocat-${{ steps.date.outputs.date }}
     - name: Execute Debug Output (Stage 1)
       shell: bash
       run: ./debug.sh
@@ -71,6 +66,7 @@ jobs:
         sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
         sed -i "s/WORKLOAD_NAME/${PREVIEW_NAME}-review-${CPLN_WORKLOAD}/" cpln-workload.yaml
         sed -i "s/IMAGE_NAME_TAG/\/\/image\/${CPLN_IMAGE}-${RELEASE_NAME}/" cpln-workload.yaml
+        echo "CPLN_IMAGE: ${CPLN_IMAGE}. RELEASE_NAME: ${RELEASE_NAME}. BUILD_VERSION: ${BUILD_VERSION}"
 
     - name: Execute Debug Output (Prior to Run CPLN Apply)
       shell: bash
