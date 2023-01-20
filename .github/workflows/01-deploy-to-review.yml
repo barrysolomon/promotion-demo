@@ -48,18 +48,18 @@ jobs:
     - name: Get current date
       id: date
       run: |
-        echo "{date::$(date +'%Y-%m-%d')}={value}" >> $GITHUB_OUTPUT
-
-    - name: Execute Debug Output (Stage 1)
-      shell: bash
-      run: ./debug.sh
-
+        echo "{DATE}={$(date +'%Y-%m-%d')}" >> $GITHUB_ENV
+      # echo "::set-output name=date::$(date +'%Y-%m-%d')"
+ 
     - name: Echo Env Variables
       run: |
         echo "PREVIEW_NAME: ${PREVIEW_NAME}. GITHUB_HEAD_REF: ${GITHUB_HEAD_REF}"
         echo "SHA: ${GITHUB_SHA}. GITHUB_SHA::7: ${GITHUB_SHA::7}. SHORT_SHA: ${SHORT_SHA}"
         echo "CPLN_IMAGE: ${CPLN_IMAGE}. RELEASE_NAME: ${RELEASE_NAME}. BUILD_VERSION: ${BUILD_VERSION}"
-        echo "date: ${date}"
+
+    - name: Execute Debug Output (Stage 1)
+      shell: bash
+      run: ./debug.sh
 
     - name: Substitute Tokens in Control Plane YAML Files
       shell: bash
