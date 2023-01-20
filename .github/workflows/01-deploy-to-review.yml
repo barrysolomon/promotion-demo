@@ -14,13 +14,14 @@ on: [push]
 
 # Convert the GitHub secret variables to environment variables for use by the Control Plane CLI
 env:
-  CPLN_ORG: ${{secrets.CPLN_ORG_DEVELOPMENT}}
-  CPLN_GVC: ${{secrets.CPLN_GVC}}
-  CPLN_WORKLOAD: ${{secrets.CPLN_WORKLOAD}}
   CPLN_TOKEN: ${{secrets.CPLN_TOKEN_DEVELOPMENT}}
-  CPLN_IMAGE: ${{secrets.CPLN_IMAGE}}
+ 
+  CPLN_ORG:        "dev-umbrella-corporation" # ${{secrets.CPLN_ORG_DEVELOPMENT}}
+  CPLN_GVC:        "sandbox" # ${{secrets.CPLN_GVC}}
+  CPLN_WORKLOAD:   "sprint-x" # ${{secrets.CPLN_WORKLOAD}}
+  CPLN_IMAGE:      "image": # ${{secrets.CPLN_IMAGE}}
   GITHUB_HEAD_REF: ${{ github.ref_name }}
-  RELEASE_TYPE: "review"
+  RELEASE_TYPE:    "review"
 
 jobs:
 
@@ -52,12 +53,15 @@ jobs:
 
     - name: Echo Env Variables (Debug)
       run: |
-        echo "BRANCH_NAME: ${BRANCH_NAME}. GITHUB_HEAD_REF: ${GITHUB_HEAD_REF}"
-        echo "SHA: ${GITHUB_SHA}. GITHUB_SHA::7: ${GITHUB_SHA::7}. SHORT_SHA: ${SHORT_SHA}"
-        echo "RELEASE_NAME: ${RELEASE_NAME}. BUILD_VERSION: ${BUILD_VERSION}"
-        echo "DATE: ${DATE}"
-        echo "WORKLOAD_NAME: ${WORKLOAD_NAME}"
-        echo "IMAGE_NAME: ${IMAGE_NAME}"
+        echo "BRANCH_NAME:     ${BRANCH_NAME}"
+        echo "GITHUB_HEAD_REF: ${GITHUB_HEAD_REF}"
+        echo "SHA:             ${GITHUB_SHA}."
+        echo "SHORT_SHA:       ${SHORT_SHA}"
+        echo "RELEASE_NAME:    ${RELEASE_NAME}
+        echo "RELEASE_NAME:    ${RELEASE_NAME}"
+        echo "DATE:            ${DATE}"
+        echo "WORKLOAD_NAME:   ${WORKLOAD_NAME}"
+        echo "IMAGE_NAME:      ${IMAGE_NAME}"
 
     # - name: Execute Debug Output (Stage 1)
     #   shell: bash
