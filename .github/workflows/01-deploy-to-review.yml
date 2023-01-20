@@ -37,25 +37,23 @@ jobs:
       shell: bash
       run: ./release/review/release-tasks.sh
 
-    - name: Set Short SHA
+    - name: Set Env Variables
       run: |
         echo "SHORT_SHA=`echo ${GITHUB_SHA::7} | cut -c1-7`" >> $GITHUB_ENV
+        echo "BUILD_VERSION=`echo ${GITHUB_SHA::7} | cut -c1-7`" >> $GITHUB_ENV
+        echo "RELEASE_NAME=nightly-release:${{ steps.date.outputs.date }}" >> $GITHUB_ENV
+        echo "DATE=$(date +'%Y-%m-%d-%H-%mm')" >> $GITHUB_ENV
 
     - name: Normalize Branch Name
       run: |
         echo "PREVIEW_NAME=`echo ${{ env.GITHUB_HEAD_REF }} | tr '/' '-'`" >> $GITHUB_ENV
-
-    - name: Get current date
-      id: date
-      run: |
-        echo "{DATE}={$(date +'%Y-%m-%d')}" >> $GITHUB_ENV
-      # echo "::set-output name=date::$(date +'%Y-%m-%d')"
- 
-    - name: Echo Env Variables
+        
+    - name: Echo Env Variables (Debug)
       run: |
         echo "PREVIEW_NAME: ${PREVIEW_NAME}. GITHUB_HEAD_REF: ${GITHUB_HEAD_REF}"
         echo "SHA: ${GITHUB_SHA}. GITHUB_SHA::7: ${GITHUB_SHA::7}. SHORT_SHA: ${SHORT_SHA}"
         echo "CPLN_IMAGE: ${CPLN_IMAGE}. RELEASE_NAME: ${RELEASE_NAME}. BUILD_VERSION: ${BUILD_VERSION}"
+        echo "DATE: ${DATE}"
 
     - name: Execute Debug Output (Stage 1)
       shell: bash
@@ -63,9 +61,6 @@ jobs:
 
     - name: Substitute Tokens in Control Plane YAML Files
       shell: bash
-      env:
-        BUILD_VERSION: ${SHORT_SHA}
-        RELEASE_NAME: nightly-release:${{ steps.date.outputs.date }}
       working-directory: ./cpln
       run: |
         sed -i "s/GVC_NAME/${CPLN_GVC}/" cpln-gvc.yaml
