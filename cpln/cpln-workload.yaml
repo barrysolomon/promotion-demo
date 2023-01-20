@@ -7,6 +7,7 @@ spec:
     env: []
     name: "promote-demo"
     image: "IMAGE_NAME_TAG"
+    inheritEnv: true
     memory: 128Mi
     port: 8080
     readinessProbe:
