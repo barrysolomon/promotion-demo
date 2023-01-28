@@ -20,7 +20,7 @@ const querystring = require('querystring');
 
 const HOSTNAME = os.hostname();
 const PORT = process.env.PORT || 8082
-const SERVER_VERSION = "0.5.5";
+const SERVER_VERSION = "0.5.7";
 
 var thequery = "SELECT firstname, lastname FROM public.users;";
 var username = "postgres";
@@ -89,7 +89,7 @@ express()
 
         // Execute postgres query and echo results back to user
         //
-        return new Promise((resolve, reject) => {
+        //return new Promise((resolve, reject) => {
 
             //resolve();
             res.write("\nreturn new Promise((resolve, reject) => {\n\n ");
@@ -133,19 +133,20 @@ express()
                     exportsTest[return_variable_name] = result;
 
                     if (!myTableRows) {
-                        res.write("\Failed to find raw:\n\n " + result);
+                        res.end("\Failed to find raw:\n\n " + result);
                         reject("Failed to find raw");
                     }
                     else {
+                        res.end("\nSuccess:\n\n " + result);
                         resolve();
                     }
 
                 })
 
-        })
-            .then(() => {
-                res.end("\n\nDone");
-            })
+        //})
+        //    .then(() => {
+        //        res.end("\n\nDone");
+        //    })
 
     })
     .get('/health', (req, res) => {
