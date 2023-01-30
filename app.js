@@ -21,7 +21,7 @@ const querystring = require('querystring');
 
 const HOSTNAME = os.hostname();
 const PORT = process.env.PORT || 8080
-const SERVER_VERSION = "0.5.10";
+const SERVER_VERSION = "0.5.11";
 
 var thequery = "SELECT firstname, lastname FROM public.users;";
 var username = "postgres";
