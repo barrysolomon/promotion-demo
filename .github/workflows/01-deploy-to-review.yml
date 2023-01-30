@@ -16,10 +16,10 @@ on: [push]
 env:
   CPLN_TOKEN:     ${{secrets.CPLN_TOKEN_DEVELOPMENT}}
  
-  CPLN_ORG:        "dev-umbrella-corporation" # ${{secrets.CPLN_ORG_DEVELOPMENT}}
-  CPLN_GVC:        "sandbox"  # ${{secrets.CPLN_GVC}}
+  CPLN_ORG:        "umbrella-corporation" # ${{secrets.CPLN_ORG_DEVELOPMENT}}
+  CPLN_GVC:        "whatever"  # ${{secrets.CPLN_GVC}}
   CPLN_WORKLOAD:   "sprint-x" # ${{secrets.CPLN_WORKLOAD}}
-  CPLN_IMAGE:      "custom-image-base-name"    # ${{secrets.CPLN_IMAGE}}
+  CPLN_IMAGE:      "image-base-name"    # ${{secrets.CPLN_IMAGE}}
   GITHUB_HEAD_REF: ${{ github.ref_name }}
   RELEASE_TYPE:    "review"
 

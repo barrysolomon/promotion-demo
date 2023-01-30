@@ -1,4 +1,5 @@
 /***
+ *  Postgres Query Interface
  * 
  *  Notes
  * 
@@ -20,7 +21,7 @@ const querystring = require('querystring');
 
 const HOSTNAME = os.hostname();
 const PORT = process.env.PORT || 8082
-const SERVER_VERSION = "0.5.7";
+const SERVER_VERSION = "0.5.8";
 
 var thequery = "SELECT firstname, lastname FROM public.users;";
 var username = "postgres";
