@@ -138,11 +138,11 @@ express()
 
                         if (!myTableRows) {
                             res.end("\nFailed to find raw:\n\n " + result);
-                            //reject("Failed to find raw");
+                            reject("Failed to find raw");
                         }
                         else {
                             res.end("\n\nSuccess:\n\n " + result);
-                            //resolve();
+                            resolve();
                         }
 
                     })
@@ -165,7 +165,6 @@ express()
                 console.log(`stack: ${e.stack}`);
                 console.log(`error: ${JSON.stringify(e)}`);
                 console.log("------------------------------");
-                reject();
             })
 
     })
