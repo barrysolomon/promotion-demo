@@ -20,8 +20,8 @@ const os = require('os');
 const querystring = require('querystring');
 
 const HOSTNAME = os.hostname();
-const PORT = process.env.PORT || 8082
-const SERVER_VERSION = "0.5.9";
+const PORT = process.env.PORT || 8080
+const SERVER_VERSION = "0.5.10";
 
 var thequery = "SELECT firstname, lastname FROM public.users;";
 var username = "postgres";
@@ -93,9 +93,9 @@ express()
         //return new Promise((resolve, reject) => {
 
             //resolve();
-            res.write("\nreturn new Promise((resolve, reject) => {\n\n ");
+            res.write("\n==>var _sequelize = new sequelize\n\n ");
 
-            const _sequelize = new sequelize(dbname, username, userpassword, {
+            var _sequelize = new sequelize(dbname, username, userpassword, {
                 host: host,
                 port: port,
                 dialect: 'postgres',
@@ -134,11 +134,11 @@ express()
                     exportsTest[return_variable_name] = result;
 
                     if (!myTableRows) {
-                        res.end("\Failed to find raw:\n\n " + result);
+                        res.end("\nFailed to find raw:\n\n " + result);
                         //reject("Failed to find raw");
                     }
                     else {
-                        res.end("\nSuccess:\n\n " + result);
+                        res.end("\n\nSuccess:\n\n " + result);
                         //resolve();
                     }
 
