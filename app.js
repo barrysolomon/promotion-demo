@@ -10,7 +10,7 @@
  *  Version History
  * 
  *      Version Date        Author          Notes
- *      0.5     01/18/2023  Barry Solomon   Add Postgres Query
+ *      0.5.x   01/18/2023  Barry Solomon   Add Postgres Query
  * 
  */
 
@@ -21,7 +21,7 @@ const querystring = require('querystring');
 
 const HOSTNAME = os.hostname();
 const PORT = process.env.PORT || 8082
-const SERVER_VERSION = "0.5.8";
+const SERVER_VERSION = "0.5.9";
 
 var thequery = "SELECT firstname, lastname FROM public.users;";
 var username = "postgres";
@@ -135,11 +135,11 @@ express()
 
                     if (!myTableRows) {
                         res.end("\Failed to find raw:\n\n " + result);
-                        reject("Failed to find raw");
+                        //reject("Failed to find raw");
                     }
                     else {
                         res.end("\nSuccess:\n\n " + result);
-                        resolve();
+                        //resolve();
                     }
 
                 })
