@@ -14,7 +14,7 @@ spec:
       failureThreshold: 3
       httpGet:
         httpHeaders: []
-        path: /
+        path: /health
         port: 8080
         scheme: HTTP
       initialDelaySeconds: 0

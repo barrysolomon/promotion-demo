@@ -95,6 +95,8 @@ express()
             //resolve();
             res.write("\n==>var _sequelize = new sequelize\n\n ");
 
+            try {
+
             var _sequelize = new sequelize(dbname, username, userpassword, {
                 host: host,
                 port: port,
@@ -143,6 +145,14 @@ express()
                     }
 
                 })
+
+            }
+            catch (e){
+                console.log("------------------------------");
+                console.log(`stack: ${e.stack}`);
+                console.log(`error: ${JSON.stringify(e)}`);
+                console.log("------------------------------");
+            }
 
         //})
         //    .then(() => {
