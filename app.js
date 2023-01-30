@@ -17,6 +17,7 @@
 const { response } = require('express');
 const express = require('express');
 const os = require('os');
+const { resolve } = require('path');
 const querystring = require('querystring');
 
 const HOSTNAME = os.hostname();
@@ -90,74 +91,82 @@ express()
 
         // Execute postgres query and echo results back to user
         //
-        //return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
 
             //resolve();
             res.write("\n==>var _sequelize = new sequelize\n\n ");
 
             try {
 
-            var _sequelize = new sequelize(dbname, username, userpassword, {
-                host: host,
-                port: port,
-                dialect: 'postgres',
-                pool: {
-                    max: 9,
-                    min: 0,
-                    idle: 10000
-                },
-                dialectOptions: {
-                    // ssl: {
-                    //     require: false,
-                    //     rejectUnauthorized: false
-                    // }
-                },
-            });
+                var _sequelize = new sequelize(dbname, username, userpassword, {
+                    host: host,
+                    port: port,
+                    dialect: 'postgres',
+                    pool: {
+                        max: 9,
+                        min: 0,
+                        idle: 10000
+                    },
+                    dialectOptions: {
+                        // ssl: {
+                        //     require: false,
+                        //     rejectUnauthorized: false
+                        // }
+                    },
+                });
 
-            res.write("\n==> call return _sequelize:\n");
+                res.write("\n==> call return _sequelize:\n");
 
-            return _sequelize
+                return _sequelize
 
-                .query(the_query, {
-                    type: sequelize.QueryTypes.SELECT,
-                })
-                .then(myTableRows => {
+                    .query(the_query, {
+                        type: sequelize.QueryTypes.SELECT,
+                    })
+                    .then(myTableRows => {
 
-                    res.write("\n==> .then(myTableRows => {\n");
+                        res.write("\n==> .then(myTableRows => {\n");
 
-                    const result = myTableRows && JSON.stringify(myTableRows);
+                        const result = myTableRows && JSON.stringify(myTableRows);
 
-                    res.write("\n\nQuery:\n\n " + thequery + "\n");
-                    res.write("\nResults:\n\n " + result);
+                        res.write("\n\nQuery:\n\n " + thequery + "\n");
+                        res.write("\nResults:\n\n " + result);
 
-                    console.log("myTableRows", JSON.stringify(myTableRows));
-                    console.log("Query result", result);
+                        console.log("myTableRows", JSON.stringify(myTableRows));
+                        console.log("Query result", result);
 
-                    exportsTest[return_variable_name] = result;
+                        exportsTest[return_variable_name] = result;
 
-                    if (!myTableRows) {
-                        res.end("\nFailed to find raw:\n\n " + result);
-                        //reject("Failed to find raw");
-                    }
-                    else {
-                        res.end("\n\nSuccess:\n\n " + result);
-                        //resolve();
-                    }
+                        if (!myTableRows) {
+                            res.end("\nFailed to find raw:\n\n " + result);
+                            //reject("Failed to find raw");
+                        }
+                        else {
+                            res.end("\n\nSuccess:\n\n " + result);
+                            //resolve();
+                        }
 
-                })
+                    })
 
             }
-            catch (e){
+            catch (e) {
                 console.log("------------------------------");
                 console.log(`stack: ${e.stack}`);
                 console.log(`error: ${JSON.stringify(e)}`);
                 console.log("------------------------------");
             }
 
-        //})
-        //    .then(() => {
-        //        res.end("\n\nDone");
-        //    })
+        })
+            .then(() => {
+                res.end("\n\nDone");
+                resolve();
+            })
+            .catch((e) => {
+                console.log("------------------------------");
+                console.log(`stack: ${e.stack}`);
+                console.log(`error: ${JSON.stringify(e)}`);
+                console.log("------------------------------");
+                reject();
+            })
 
     })
     .get('/health', (req, res) => {
