@@ -1,5 +1,9 @@
 FROM node:16.6.2-bullseye-slim
 
+#update package list and install telnet
+RUN apt update
+RUN apt install telnet
+
 # Create app directory
 WORKDIR /usr/src/app
 
@@ -7,10 +11,6 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 RUN npm install
-
-#update package list and install telnet
-RUN apt update
-RUN apt install telnet
 
 # Bundle app source
 COPY . .
