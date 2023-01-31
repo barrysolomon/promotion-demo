@@ -1,8 +1,10 @@
 FROM node:16.6.2-bullseye-slim
 
 #update package list and install telnet
-RUN apt update
-RUN apt install telnet
+RUN apt update | yes
+RUN apt install telnet | yes
+
+# apt-get update && apt-get install telnet
 
 # Create app directory
 WORKDIR /usr/src/app
