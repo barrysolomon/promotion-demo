@@ -32,23 +32,6 @@ var dbname = "test";
 var host = "postgres"; // "192.168.1.57"; // "postgres"; // "127.0.0.1"; // "AuggieTheDoggie"; // 
 var port = 5432;
 
-const _sequelize = new sequelize(dbname, username, userpassword, {
-    host: host,
-    port: port,
-    dialect: 'postgres',
-    pool: {
-        max: 9,
-        min: 0,
-        idle: 10000
-    },
-    dialectOptions: {
-        // ssl: {
-        //     require: false,
-        //     rejectUnauthorized: false
-        // }
-    },
-});
-
 function loadModules(moduleNames) {
 
     let modulesLoaded = [];
@@ -69,6 +52,23 @@ function loadModules(moduleNames) {
 
 }
 loadModules(["sequelize", "pg"]);
+
+const _sequelize = new sequelize(dbname, username, userpassword, {
+    host: host,
+    port: port,
+    dialect: 'postgres',
+    pool: {
+        max: 9,
+        min: 0,
+        idle: 10000
+    },
+    dialectOptions: {
+        // ssl: {
+        //     require: false,
+        //     rejectUnauthorized: false
+        // }
+    },
+});
 
 /* if returnVariableName is defined then use it else use 'queryResults' as the return variable
  */
