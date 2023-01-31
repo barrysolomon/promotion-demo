@@ -36,8 +36,12 @@ spec:
     external:
       inboundAllowCIDR:
       - 0.0.0.0/0
-      outboundAllowCIDR: []
+      outboundAllowCIDR:
+        - 0.0.0.0/0
       outboundAllowHostname: []
     internal:
       inboundAllowType: none
       inboundAllowWorkload: []
+  identityLink: IDENTITY
+  localOptions: []
+  redeployOnTagChange: false

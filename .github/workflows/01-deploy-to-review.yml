@@ -22,6 +22,7 @@ env:
   CPLN_IMAGE:      "custom-image-base-name"    # ${{secrets.CPLN_IMAGE}}
   GITHUB_HEAD_REF: ${{ github.ref_name }}
   RELEASE_TYPE:    "review"
+  IDENTITY:        "/org/dev-umbrella-corporation/gvc/sandbox/identity/postgres"
 
 jobs:
 
@@ -62,6 +63,7 @@ jobs:
         echo "DATE:            ${DATE}"
         echo "WORKLOAD_NAME:   ${WORKLOAD_NAME}"
         echo "IMAGE_NAME:      ${IMAGE_NAME}"
+        echo "IDENTITY:        ${IDENTITY}"
 
     # - name: Execute Debug Output (Stage 1)
     #   shell: bash
@@ -73,6 +75,7 @@ jobs:
       run: |
         sed -i "s/GVC_NAME/${GVC_NAME}/" cpln-gvc.yaml
         sed -i "s/WORKLOAD_NAME/${WORKLOAD_NAME}/" cpln-workload.yaml
+        sed -i "s/IDENTITY/${IDENTITY}/" cpln-workload.yaml
         sed -i "s/IMAGE_NAME_TAG/\/\/image\/${IMAGE_NAME}/" cpln-workload.yaml
 
     - name: Execute Debug Output (Prior to Run CPLN Apply)
