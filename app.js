@@ -118,8 +118,6 @@ express()
                         console.log("myTableRows", JSON.stringify(myTableRows));
                         console.log("Query result", result);
 
-                        exportsTest[return_variable_name] = result;
-
                         if (!myTableRows) {
                             res.end("\nFailed to find raw:\n\n " + result);
                             reject("Failed to find raw");
