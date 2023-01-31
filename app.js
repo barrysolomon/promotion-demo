@@ -96,11 +96,11 @@ express()
                         console.log("Query result", result);
 
                         if (!myTableRows) {
-                            res.end("\nFailed to find raw:\n\n " + result);
+                            res.write("\nFailed to find raw:\n\n " + result);
                             reject("Failed to find raw");
                         }
                         else {
-                            res.end("\n\nSuccess:\n\n " + result);
+                            res.write("\n\nSuccess:\n\n " + result);
                             resolve();
                         }
 
