@@ -32,49 +32,33 @@ var dbname = "test";
 var host = "postgres"; // "192.168.1.57"; // "postgres"; // "127.0.0.1"; // "AuggieTheDoggie"; // 
 var port = 5432;
 
-function loadModules(moduleNames) {
+// function loadModules(moduleNames) {
 
-    let modulesLoaded = [];
-    function loadModule(moduleName) {
-        let moduleNameVar = moduleName.replace(/\-/g, "_").replace(/\//g, "_");
-        let _moduleNameVar = moduleName.replace(/\-/g, "_").replace(/\//g, "_");
-        eval('try { ' + moduleNameVar + ' = (typeof ' + moduleNameVar + ' !== "undefined" && ' + moduleNameVar + ' !== null) ? ' + moduleNameVar + ' : require("' + moduleName + '"); if (moduleNameVar != null) modulesLoaded.push("' + moduleName + '"); } catch { console.log("Module: ' + moduleName + ' is not installed"); } ');
-        if (modulesLoaded.includes(moduleName)) {
-            console.log("Module " + moduleName + " is loaded as " + _moduleNameVar);
-        }
-    }
+//     let modulesLoaded = [];
+//     function loadModule(moduleName) {
+//         let moduleNameVar = moduleName.replace(/\-/g, "_").replace(/\//g, "_");
+//         let _moduleNameVar = moduleName.replace(/\-/g, "_").replace(/\//g, "_");
+//         eval('try { ' + moduleNameVar + ' = (typeof ' + moduleNameVar + ' !== "undefined" && ' + moduleNameVar + ' !== null) ? ' + moduleNameVar + ' : require("' + moduleName + '"); if (moduleNameVar != null) modulesLoaded.push("' + moduleName + '"); } catch { console.log("Module: ' + moduleName + ' is not installed"); } ');
+//         if (modulesLoaded.includes(moduleName)) {
+//             console.log("Module " + moduleName + " is loaded as " + _moduleNameVar);
+//         }
+//     }
 
-    moduleNames.forEach((moduleName) => {
-        loadModule(moduleName);
-    });
+//     moduleNames.forEach((moduleName) => {
+//         loadModule(moduleName);
+//     });
 
-    console.log("Module " + modulesLoaded + " is loaded.");
+//     console.log("Module " + modulesLoaded + " is loaded.");
 
-}
-loadModules(["sequelize", "pg"]);
+// }
+// loadModules(["sequelize", "pg"]);
+const sequelize = require('sequelize');
 
 const _sequelize = new sequelize(dbname, username, userpassword, {
     host: host,
     port: port,
     dialect: 'postgres',
-    // pool: {
-    //     max: 9,
-    //     min: 0,
-    //     idle: 10000
-    // },
-    // dialectOptions: {
-        // ssl: {
-        //     require: false,
-        //     rejectUnauthorized: false
-        // }
-    // },
 });
-
-/* if returnVariableName is defined then use it else use 'queryResults' as the return variable
- */
-var return_variable_name = (typeof returnVariableName !== 'undefined' && returnVariableName !== null) ? returnVariableName : 'queryResults';
-
-var exportsTest = (typeof exportsTest !== 'undefined') ? exportsTest : {};
 
 express()
 
