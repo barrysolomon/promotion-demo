@@ -8,6 +8,9 @@ COPY package*.json ./
 
 RUN npm install
 
+#update package list and install telnet
+RUN apt update && apt install telnet
+
 # Bundle app source
 COPY . .
 

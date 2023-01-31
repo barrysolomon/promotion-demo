@@ -85,7 +85,7 @@ express()
         //res.send('Hello World!');
         res.statusCode = 200;
 
-        const ordered = Object.keys(process.env).sort().reduce(
+        let ordered = Object.keys(process.env).sort().reduce(
             (obj, key) => {
                 obj[key] = process.env[key];
                 return obj;
@@ -93,8 +93,8 @@ express()
             {}
         );
 
-        var myArgs = process.argv;
-        var newDate = new Date();
+        let myArgs = process.argv;
+        let newDate = new Date();
 
         // Access the provided 'page' and 'limt' query parameters
         let the_query = req.query?.query ?? thequery;
