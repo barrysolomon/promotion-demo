@@ -32,6 +32,23 @@ var dbname = "test";
 var host = "postgres"; // "192.168.1.57"; // "postgres"; // "127.0.0.1"; // "AuggieTheDoggie"; // 
 var port = 5432;
 
+const _sequelize = new sequelize(dbname, username, userpassword, {
+    host: host,
+    port: port,
+    dialect: 'postgres',
+    pool: {
+        max: 9,
+        min: 0,
+        idle: 10000
+    },
+    dialectOptions: {
+        // ssl: {
+        //     require: false,
+        //     rejectUnauthorized: false
+        // }
+    },
+});
+
 function loadModules(moduleNames) {
 
     let modulesLoaded = [];
@@ -97,23 +114,6 @@ express()
             res.write("\n==>var _sequelize = new sequelize\n\n ");
 
             try {
-
-                var _sequelize = new sequelize(dbname, username, userpassword, {
-                    host: host,
-                    port: port,
-                    dialect: 'postgres',
-                    pool: {
-                        max: 9,
-                        min: 0,
-                        idle: 10000
-                    },
-                    dialectOptions: {
-                        // ssl: {
-                        //     require: false,
-                        //     rejectUnauthorized: false
-                        // }
-                    },
-                });
 
                 res.write("\n==> call return _sequelize:\n");
 
