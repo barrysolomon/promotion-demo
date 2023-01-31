@@ -57,17 +57,17 @@ const _sequelize = new sequelize(dbname, username, userpassword, {
     host: host,
     port: port,
     dialect: 'postgres',
-    pool: {
-        max: 9,
-        min: 0,
-        idle: 10000
-    },
-    dialectOptions: {
+    // pool: {
+    //     max: 9,
+    //     min: 0,
+    //     idle: 10000
+    // },
+    // dialectOptions: {
         // ssl: {
         //     require: false,
         //     rejectUnauthorized: false
         // }
-    },
+    // },
 });
 
 /* if returnVariableName is defined then use it else use 'queryResults' as the return variable
