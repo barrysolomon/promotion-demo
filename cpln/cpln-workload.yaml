@@ -42,6 +42,6 @@ spec:
     internal:
       inboundAllowType: none
       inboundAllowWorkload: []
-  identityLink: IDENTITY
+  identityLink: /org/CPLN_ORG/gvc/GVC_NAME/identity/IDENTITY
   localOptions: []
   redeployOnTagChange: false
