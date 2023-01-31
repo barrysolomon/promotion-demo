@@ -10,7 +10,7 @@
  *  Version History
  * 
  *      Version Date        Author          Notes
- *      0.6.x   01/30/2023  Barry Solomon   Add Promise
+ *      0.7.x   01/30/2023  Barry Solomon   Add Promise
  * 
  */
 
@@ -20,13 +20,13 @@ const os = require('os');
 
 const HOSTNAME = os.hostname();
 const PORT = process.env.PORT || 8080
-const SERVER_VERSION = "0.6.1";
+const SERVER_VERSION = "0.7.1";
 
-var thequery = "SELECT firstname, lastname FROM public.users;";
-var username = "postgres";
-var userpassword = "wh4t3v3r4?";
+var thequery = "SELECT username, email, fullname FROM public.users;";
+var username = "postgresUser";
+var userpassword = "postgresPW";
 
-var dbname = "test";
+var dbname = "postgresDB";
 var host = "postgres"; // "192.168.1.57"; // "postgres"; // "127.0.0.1"; // "AuggieTheDoggie"; // 
 var port = 5432;
 
