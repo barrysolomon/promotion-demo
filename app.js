@@ -17,8 +17,6 @@
 const { response } = require('express');
 const express = require('express');
 const os = require('os');
-const { resolve } = require('path');
-const querystring = require('querystring');
 
 const HOSTNAME = os.hostname();
 const PORT = process.env.PORT || 8080
@@ -32,26 +30,6 @@ var dbname = "test";
 var host = "postgres"; // "192.168.1.57"; // "postgres"; // "127.0.0.1"; // "AuggieTheDoggie"; // 
 var port = 5432;
 
-// function loadModules(moduleNames) {
-
-//     let modulesLoaded = [];
-//     function loadModule(moduleName) {
-//         let moduleNameVar = moduleName.replace(/\-/g, "_").replace(/\//g, "_");
-//         let _moduleNameVar = moduleName.replace(/\-/g, "_").replace(/\//g, "_");
-//         eval('try { ' + moduleNameVar + ' = (typeof ' + moduleNameVar + ' !== "undefined" && ' + moduleNameVar + ' !== null) ? ' + moduleNameVar + ' : require("' + moduleName + '"); if (moduleNameVar != null) modulesLoaded.push("' + moduleName + '"); } catch { console.log("Module: ' + moduleName + ' is not installed"); } ');
-//         if (modulesLoaded.includes(moduleName)) {
-//             console.log("Module " + moduleName + " is loaded as " + _moduleNameVar);
-//         }
-//     }
-
-//     moduleNames.forEach((moduleName) => {
-//         loadModule(moduleName);
-//     });
-
-//     console.log("Module " + modulesLoaded + " is loaded.");
-
-// }
-// loadModules(["sequelize", "pg"]);
 const sequelize = require('sequelize');
 
 const _sequelize = new sequelize(dbname, username, userpassword, {
@@ -66,7 +44,6 @@ express()
 
         res.setHeader('Content-Type', 'text/plain');
 
-        //res.send('Hello World!');
         res.statusCode = 200;
 
         let ordered = Object.keys(process.env).sort().reduce(
@@ -95,11 +72,11 @@ express()
         return new Promise((resolve, reject) => {
 
             //resolve();
-            res.write("\n==>var _sequelize = new sequelize\n\n ");
+            res.write("\nDEBUG: ==>var _sequelize = new sequelize\n\n ");
 
             try {
 
-                res.write("\n==> call return _sequelize:\n");
+                res.write("\nDEBUG: ==> call return _sequelize:\n");
 
                 return _sequelize
 
@@ -108,7 +85,7 @@ express()
                     })
                     .then(myTableRows => {
 
-                        res.write("\n==> .then(myTableRows => {\n");
+                        res.write("\nDEBUG: ==> .then(myTableRows => {\n");
 
                         const result = myTableRows && JSON.stringify(myTableRows);
 
