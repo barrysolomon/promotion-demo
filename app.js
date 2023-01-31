@@ -21,8 +21,8 @@ const { resolve } = require('path');
 const querystring = require('querystring');
 
 const HOSTNAME = os.hostname();
-const PORT = process.env.PORT || 8083
-const SERVER_VERSION = "0.6.0";
+const PORT = process.env.PORT || 8080
+const SERVER_VERSION = "0.6.1";
 
 var thequery = "SELECT firstname, lastname FROM public.users;";
 var username = "postgres";
@@ -149,22 +149,21 @@ express()
 
             }
             catch (e) {
-                console.log("------------------------------");
+                console.log("------------------------------\n");
                 console.log(`stack: ${e.stack}`);
-                console.log(`error: ${JSON.stringify(e)}`);
-                console.log("------------------------------");
+                console.log(`error: ${e}`);
+                console.log("------------------------------\n");
             }
 
         })
             .then(() => {
                 res.end("\n\nDone");
-                resolve();
             })
             .catch((e) => {
-                console.log("------------------------------");
+                console.log("------------------------------\n");
                 console.log(`stack: ${e.stack}`);
-                console.log(`error: ${JSON.stringify(e)}`);
-                console.log("------------------------------");
+                console.log(`error: ${e}`);
+                console.log("------------------------------\n");
             })
 
     })
