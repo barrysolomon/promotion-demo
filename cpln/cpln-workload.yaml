@@ -5,7 +5,7 @@ spec:
   - args: []
     cpu: 50m
     env: []
-    name: "promote-demo"
+    name: "tps-reports"
     image: "IMAGE_NAME_TAG"
     inheritEnv: true
     memory: 128Mi
