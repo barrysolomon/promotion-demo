@@ -18,8 +18,8 @@ env:
  
   CPLN_ORG:        "dev-umbrella-corporation" # ${{secrets.CPLN_ORG_DEVELOPMENT}}
   CPLN_GVC:        "sandbox"  # ${{secrets.CPLN_GVC}}
-  CPLN_WORKLOAD:   "sprint-1" # ${{secrets.CPLN_WORKLOAD}}
-  CPLN_IMAGE:      "custom-image-base-name"    # ${{secrets.CPLN_IMAGE}}
+  CPLN_WORKLOAD:   "tps-reports" # ${{secrets.CPLN_WORKLOAD}}
+  CPLN_IMAGE:      "tps-reporter"  # ${{secrets.CPLN_IMAGE}}
   GITHUB_HEAD_REF: ${{ github.ref_name }}
   RELEASE_TYPE:    "review"
   IDENTITY:        "postgres"

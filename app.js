@@ -1,11 +1,10 @@
 /***
- *  Postgres Query Interface
+ *  Postgres Query Sandbox
  * 
  *  Notes
  * 
  *      npm install express
  *      npm install sequelize
- *      npm install pg
  * 
  *  Version History
  * 
