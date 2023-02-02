@@ -14,7 +14,7 @@ on: [push]
 
 # Convert the GitHub secret variables to environment variables for use by the Control Plane CLI
 env:
-  CPLN_TOKEN:     ${{secrets.CPLN_TOKEN_DEVELOPMENT}}
+  CPLN_TOKEN:     ${{secrets.CPLN_TOKEN_QA}}
  
   CPLN_ORG:        "initech" # ${{secrets.CPLN_ORG_DEVELOPMENT}}
   CPLN_GVC:        "qa-gvc"  # ${{secrets.CPLN_GVC}}
