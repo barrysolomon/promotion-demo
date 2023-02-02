@@ -19,7 +19,7 @@ env:
   CPLN_ORG:        "dev-umbrella-corporation" # ${{secrets.CPLN_ORG_DEVELOPMENT}}
   CPLN_GVC:        "qa-internal"  # ${{secrets.CPLN_GVC}}
   CPLN_WORKLOAD:   "tps-reports" # ${{secrets.CPLN_WORKLOAD}}
-  CPLN_IMAGE:      "tps-iamge"  # ${{secrets.CPLN_IMAGE}}
+  CPLN_IMAGE:      "tps-report-generator"  # ${{secrets.CPLN_IMAGE}}
   GITHUB_HEAD_REF: ${{ github.ref_name }}
   RELEASE_TYPE:    "qa"
   IDENTITY:        "postgres"
