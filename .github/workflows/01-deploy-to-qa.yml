@@ -16,7 +16,7 @@ on: [push]
 env:
   CPLN_TOKEN:     ${{secrets.CPLN_TOKEN_DEVELOPMENT}}
  
-  CPLN_ORG:        "dev-umbrella-corporation" # ${{secrets.CPLN_ORG_DEVELOPMENT}}
+  CPLN_ORG:        "initech" # ${{secrets.CPLN_ORG_DEVELOPMENT}}
   CPLN_GVC:        "qa-gvc"  # ${{secrets.CPLN_GVC}}
   CPLN_WORKLOAD:   "tps-reports" # ${{secrets.CPLN_WORKLOAD}}
   CPLN_IMAGE:      "tps-report-generator"  # ${{secrets.CPLN_IMAGE}}
