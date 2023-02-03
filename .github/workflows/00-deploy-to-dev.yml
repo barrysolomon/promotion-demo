@@ -97,16 +97,21 @@ jobs:
         cpln image docker-login
         cpln image build --name ${IMAGE_NAME} --dockerfile ./Dockerfile --push
 
-    - name: Run CPLN Apply
+    - name: Create GVC
       shell: bash
       working-directory: ./cpln
       run: |
         cpln apply -f cpln-gvc.yaml
-        cpln apply -f cpln-workload.yaml 
-        
+
     - name: Create Agent Identity 
       shell: bash
       run: |
         cpln identity create --name postgres 
         cpln apply --file ./cpln/cpln-identity.yaml
 
+    - name: Create Workload
+      shell: bash
+      working-directory: ./cpln
+      run: |
+        cpln apply -f cpln-workload.yaml 
+        
