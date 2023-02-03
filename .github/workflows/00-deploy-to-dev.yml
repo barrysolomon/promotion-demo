@@ -2,21 +2,27 @@
 
 name: 02-Deploy-To-Dev
 
-on:
-  pull_request:
-    types:
-    - closed
-    branches:
-    - main
-    paths-ignore:
-    - ".github/workflows/**"
+on: [push]
+# on:
+#   pull_request:
+#     types:
+#     - closed
+#     branches:
+#     - main
+#     paths-ignore:
+#     - ".github/workflows/**"
 
 # Convert the GitHub secret variables to environment variables for use by the Control Plane CLI
 env:
-  CPLN_GVC: ${{secrets.CPLN_GVC}}
-  CPLN_WORKLOAD: ${{secrets.CPLN_WORKLOAD}}
-  CPLN_IMAGE: ${{secrets.CPLN_IMAGE}}
-  CPLN_ORG_DEVELOPMENT: ${{secrets.CPLN_ORG_DEVELOPMENT}}
+  CPLN_TOKEN:     ${{secrets.CPLN_TOKEN_QA}}
+ 
+  CPLN_ORG:        "initech" # ${{secrets.CPLN_ORG_DEVELOPMENT}}
+  CPLN_GVC:        "dev-gvc"  # ${{secrets.CPLN_GVC}}
+  CPLN_WORKLOAD:   "tps-reports" # ${{secrets.CPLN_WORKLOAD}}
+  CPLN_IMAGE:      "tps-report-generator"  # ${{secrets.CPLN_IMAGE}}
+  GITHUB_HEAD_REF: ${{ github.ref_name }}
+  RELEASE_TYPE:    "dev"
+  IDENTITY:        "postgres"
 
 jobs:
   deploy-to-dev:
