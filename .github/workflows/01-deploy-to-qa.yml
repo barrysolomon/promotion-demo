@@ -29,6 +29,8 @@ jobs:
   deploy-to-review:
 
     runs-on: ubuntu-latest
+    
+    if: ${{ github.event.action == 'closed' && github.event.pull_request.merged == true }}
     steps:
 
     - name: Check out the repo

@@ -1,6 +1,6 @@
 # Control Plane GitHub Action
 
-name: 02-Deploy-To-Dev
+name: 00-Deploy-To-Dev
 
 on: [push]
 # on:
@@ -26,8 +26,8 @@ env:
 
 jobs:
   deploy-to-dev:
+  
     runs-on: ubuntu-latest
-    if: ${{ github.event.action == 'closed' && github.event.pull_request.merged == true }}
 
     steps:
     - name: Check out the repo
