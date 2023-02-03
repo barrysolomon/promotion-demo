@@ -78,6 +78,7 @@ jobs:
         sed -i "s/CPLN_ORG/${CPLN_ORG}/" cpln-workload.yaml
         sed -i "s/GVC_NAME/${GVC_NAME}/" cpln-workload.yaml
         sed -i "s/IMAGE_NAME_TAG/\/\/image\/${IMAGE_NAME}/" cpln-workload.yaml
+        sed -i "s/GVC_NAME/${GVC_NAME}/" cpln-identity.yaml
 
     - name: Execute Debug Output (Prior to Run CPLN Apply)
       shell: bash
@@ -88,12 +89,13 @@ jobs:
       run: |
         sudo npm install -g @controlplane/cli
         cpln --version
-        cpln profile update default --token ${CPLN_TOKEN}
+        cpln profile update default --token ${CPLN_TOKEN} --org ${CPLN_ORG} --gvc ${GVC_NAME}
 
     - name: Create Agent Identity 
       shell: bash
       run: |
-        cpln --org initech --gvc ${GVC_NAME} apply --file ./cpln/cpln-identity.yaml
+        cpln identity create --name postgres 
+        cpln apply --file ./cpln/cpln-identity.yaml
 
     - name: Containerize application and push image
       shell: bash
@@ -106,4 +108,4 @@ jobs:
       working-directory: ./cpln
       run: |
         cpln apply -f cpln-gvc.yaml
-        cpln apply -f cpln-workload.yaml --gvc ${CPLN_GVC}
+        cpln apply -f cpln-workload.yaml 
