@@ -92,7 +92,7 @@ jobs:
       run: |
         sudo npm install -g @controlplane/cli
         cpln --version
-        cpln profile update default --token ${CPLN_TOKEN}
+        cpln profile update default --token ${CPLN_TOKEN} --org ${CPLN_ORG} --gvc ${GVC_NAME}
 
     - name: Containerize application and push image
       shell: bash
@@ -100,9 +100,21 @@ jobs:
         cpln image docker-login
         cpln image build --name ${IMAGE_NAME} --dockerfile ./Dockerfile --push
 
-    - name: Run CPLN Apply
+    - name: Create GVC
       shell: bash
       working-directory: ./cpln
       run: |
         cpln apply -f cpln-gvc.yaml
-        cpln apply -f cpln-workload.yaml --gvc ${CPLN_GVC}
+
+    - name: Create Agent Identity 
+      shell: bash
+      run: |
+        cpln identity create --name postgres 
+        cpln apply --file ./cpln/cpln-identity.yaml
+
+    - name: Create Workload
+      shell: bash
+      working-directory: ./cpln
+      run: |
+        cpln apply -f cpln-workload.yaml 
+        
