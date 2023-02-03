@@ -93,7 +93,7 @@ jobs:
     - name: Create Agent Identity 
       shell: bash
       run: |
-        cpln --org initech --gvc ${GVC_NAME} apply --file ./cpln/cpln-identity.yanl
+        cpln --org initech --gvc ${GVC_NAME} apply --file ./cpln/cpln-identity.yaml
 
     - name: Containerize application and push image
       shell: bash
