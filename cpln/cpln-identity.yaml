@@ -1,0 +1,13 @@
+kind: identity
+name: postgres
+description: postgres 
+tags: {}
+networkResources:
+  - name: postgres
+    IPs:
+      - 192.168.1.57
+    agentLink: /org/initech/agent/agent-99
+    ports:
+      - 5432
+status:
+  objectName: cp

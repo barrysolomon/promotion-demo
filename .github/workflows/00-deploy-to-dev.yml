@@ -89,20 +89,11 @@ jobs:
         sudo npm install -g @controlplane/cli
         cpln --version
         cpln profile update default --token ${CPLN_TOKEN}
-        cpln --org initech --gvc qa-gvc apply --file - <<EOF \
-        kind: identity \
-        name: postgres \
-        description: postgres \
-        tags: {} \
-        networkResources: \
-          - name: postgres \
-            IPs: \
-              - 192.168.1.57 \
-            agentLink: /org/initech/agent/agent-99 \
-            ports: \
-              - 5432 \
-        status: \
-          objectName: cp
+
+    - name: Create Agent Identity 
+      shell: bash
+      run: |
+        cpln --org initech --gvc ${GVC_NAME} apply --file ./cpln/cpln-identity.yanl
 
     - name: Containerize application and push image
       shell: bash
