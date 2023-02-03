@@ -91,12 +91,6 @@ jobs:
         cpln --version
         cpln profile update default --token ${CPLN_TOKEN} --org ${CPLN_ORG} --gvc ${GVC_NAME}
 
-    - name: Create Agent Identity 
-      shell: bash
-      run: |
-        cpln identity create --name postgres 
-        cpln apply --file ./cpln/cpln-identity.yaml
-
     - name: Containerize application and push image
       shell: bash
       run: |
@@ -109,3 +103,10 @@ jobs:
       run: |
         cpln apply -f cpln-gvc.yaml
         cpln apply -f cpln-workload.yaml 
+        
+    - name: Create Agent Identity 
+      shell: bash
+      run: |
+        cpln identity create --name postgres 
+        cpln apply --file ./cpln/cpln-identity.yaml
+
