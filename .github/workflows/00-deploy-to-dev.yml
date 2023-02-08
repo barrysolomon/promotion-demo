@@ -107,9 +107,15 @@ jobs:
       shell: bash
       run: |
         cpln identity create --name postgres 
+
+    - name: Update Agent Identity 
+      if: always()
+      shell: bash
+      run: |
         cpln apply --file ./cpln/cpln-identity.yaml
 
     - name: Create Workload
+      if: always()
       shell: bash
       working-directory: ./cpln
       run: |
