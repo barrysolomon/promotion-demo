@@ -10,7 +10,7 @@
  *  Version History
  * 
  *      Version Date        Author          Notes
- *      0.7.x   01/30/2023  Barry Solomon   Add Promise
+ *      0.8.x   01/30/2023  Barry Solomon   Add Promise
  * 
  */
 
@@ -20,7 +20,7 @@ const os = require('os');
 
 const HOSTNAME = os.hostname();
 const PORT = process.env.PORT || 8080
-const SERVER_VERSION = "0.7.4";
+const SERVER_VERSION = "0.8.4";
 
 var thequery     = "SELECT username, email, fullname FROM public.users;";
 var username     = process.env.POSTGRES_USERNAME || "postgresUser";
