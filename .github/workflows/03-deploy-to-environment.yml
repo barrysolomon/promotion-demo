@@ -1,6 +1,6 @@
 # Control Plane GitHub Action
 
-name: 03-Deploy-To-Stage-or-Prod
+name: 03-Deploy-To-QA-Stage-or-Prod
 
 # Controls when the workflow will run. Allows you to run this workflow manually from the Actions tab
 on:
@@ -12,6 +12,7 @@ on:
         default: "stage"
         description: Environment To Deploy To
         options:
+        - qa
         - stage
         - prod
 
@@ -51,6 +52,13 @@ jobs:
       run: |
         echo "IMAGE_TAG=`echo $(cpln workload get -o json --org ${{secrets.CPLN_ORG_DEVELOPMENT}} --token ${{secrets.CPLN_TOKEN_DEVELOPMENT}} | jq -r '.items[] | select(.name=="dev-"+env.CPLN_WORKLOAD) | .spec.containers[0].image[(.spec.containers[0].image | rindex(":"))+1:]')`" >> $GITHUB_ENV
         cpln profile update default --token ${CPLN_TOKEN}
+
+    - name: Substitute Tokens in Control Plane YAML Files and Create/Update GVC - QA
+      if: ${{ github.event.inputs.environment == 'qa' }}
+      shell: bash
+      working-directory: ./cpln
+      run: |
+        sed -i "s/WORKLOAD_NAME/qa-${CPLN_WORKLOAD}/" cpln-workload.yaml
 
     - name: Substitute Tokens in Control Plane YAML Files and Create/Update GVC - Stage
       if: ${{ github.event.inputs.environment == 'stage' }}
