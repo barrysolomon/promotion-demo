@@ -7,6 +7,8 @@
  *      npm install express
  *      npm install sequelize
  * 
+ *      https://github.com/barrysolomon/promotion-demo/actions
+ * 
  *  Version History
  * 
  *      Version Date        Author          Notes
@@ -20,7 +22,7 @@ const os = require('os');
 
 const HOSTNAME = os.hostname();
 const PORT = process.env.PORT || 8080
-const SERVER_VERSION = "0.9.5";
+const SERVER_VERSION = "0.9.6";
 
 var thequery     = "SELECT username, email, fullname FROM public.users;";
 var username     = process.env.POSTGRES_USERNAME || "postgresUser";
