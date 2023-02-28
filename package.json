@@ -3,8 +3,26 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "config": {
+    "org": "initech",
+    "gvc": "dev-gvc",
+    "locations": ["aws-us-west-2"]
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "cpln-image-build": "cpln image build --push --org $npm_package_config_org --name $npm_package_name:$npm_package_version && npm version patch",
+    "cpln-image-workload-create": "cpln image build --push --org $npm_package_config_org --name $npm_package_name:$npm_package_version && cpln workload create --name $npm_package_name --image //image/$npm_package_name:$npm_package_version --public --org $npm_package_config_org --gvc $npm_package_config_gvc && npm version patch",
+    "cpln-image-workload-update": "cpln image build --push --org $npm_package_config_org --name $npm_package_name:$npm_package_version && cpln workload update $npm_package_name --set spec.containers.$npm_package_name.image=//image/$npm_package_name:$npm_package_version  --org $npm_package_config_org --gvc $npm_package_config_gvc",
+    "cpln-workload-create": "cpln workload create --name $npm_package_name --image //image/$npm_package_name:$npm_package_version --public --org $npm_package_config_org --gvc $npm_package_config_gvc",
+    "cpln-workload-update": "cpln workload update $npm_package_name --org $npm_package_config_org --gvc $npm_package_config_gvc --set spec.containers.$npm_package_name.image=$npm_package_name:$npm_package_version",
+    "cpln-workload-delete": "cpln workload delete $npm_package_name --org $npm_package_config_org --gvc $npm_package_config_gvc",
+    "cpln-workload-redeploy": "cpln workload force-redeployment $npm_package_name --org $npm_package_config_org --gvc $npm_package_config_gvc",
+    "cpln-gvc-delete": "cpln gvc delete $npm_package_config_gvc --org $npm_package_config_org",
+    "cpln-gvc-create": "cpln gvc create --name $npm_package_config_gvc --location $npm_package_config_locations --org $npm_package_config_org",
+    "build": "npm i",
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "terraform": "terraform plan -out deploy_dev && terraform apply deploy_dev",
+    "terraform-destroy": "terraform destroy"
   },
   "keywords": [],
   "author": "",
