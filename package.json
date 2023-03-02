@@ -11,7 +11,7 @@
     ]
   },
   "scripts": {
-    "cpln-image-build": "cpln image build --push --org $npm_package_config_org --name $npm_package_name:$npm_package_version && npm version patch",
+    "cpln-image-build": "cpln image build --push --org $npm_package_config_org --name $npm_package_name:$npm_package_version ",
     "cpln-image-workload-create": "cpln image build --push --org $npm_package_config_org --name $npm_package_name:$npm_package_version && cpln workload create --name $npm_package_name --image //image/$npm_package_name:$npm_package_version --public --org $npm_package_config_org --gvc $npm_package_config_gvc && npm version patch",
     "cpln-image-workload-update": "cpln image build --push --org $npm_package_config_org --name $npm_package_name:$npm_package_version && cpln workload update $npm_package_name --set spec.containers.$npm_package_name.image=//image/$npm_package_name:$npm_package_version  --org $npm_package_config_org --gvc $npm_package_config_gvc",
     "cpln-workload-create": "cpln workload create --name $npm_package_name --image //image/$npm_package_name:$npm_package_version --public --org $npm_package_config_org --gvc $npm_package_config_gvc",
