@@ -1,5 +1,5 @@
 {
-  "name": "postgres-client",
+  "name": "tps-reports",
   "version": "1.0.1",
   "description": "",
   "main": "app.js",
